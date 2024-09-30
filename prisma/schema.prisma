@@ -18,8 +18,8 @@ model User {
   id String @id
   email String @unique
   phoneNumber String? @unique
-  userName String?
-  fullName String?
+  userName String @default("no name")
+  fullName String @default("no name")
 
   trial Boolean @default(false)
   bought Boolean @default(false)
@@ -30,4 +30,5 @@ model User {
   
   paymentId String? @unique
 
+  admin Boolean @default(false)
 }

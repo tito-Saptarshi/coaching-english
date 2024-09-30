@@ -20,7 +20,6 @@ export async function GET() {
       data: {
         id: user.id,
         email: user.email ?? "",
-        userName: user.username?? "",
       },
     });
   }
