@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, MoreHorizontal, Search } from "lucide-react";
 import { User } from "../lib/types";
-import { confirmPayment } from "../actions";
+import Link from "next/link";
 
 interface AllUsersListProps {
   users: User[];
@@ -29,8 +29,6 @@ interface AllUsersListProps {
 
 export function AllUsersList({ users }: AllUsersListProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [payment, setPayment] = useState(false);
-
 
   const [filterSubscribed, setFilterSubscribed] = useState<boolean>(false);
 
@@ -97,45 +95,39 @@ export function AllUsersList({ users }: AllUsersListProps) {
           </TableHeader>
           <TableBody>
             {filteredUsers.map((user) => {
-              setPayment(user.verified)
               return (
-              <TableRow key={user.id}>
-                <TableCell>{user.fullName}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.paymentId}</TableCell>
-                <TableCell>{user.trialDate}</TableCell>
-                <TableCell>{user.bought ? "Yes" : "No"}</TableCell>
-                <TableCell>{user.trial ? "Yes" : "No"}</TableCell>
-                <TableCell></TableCell>
-                <TableCell>{payment ? "Yes" : "No"}</TableCell>
-                <TableCell>{user.verified ? "Yes" : "No"}</TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem>
-                        <button
-                          onClick={() => confirmPayment(user.id, user.admin)}
-                        >
-                          Confirm Payment
-                        </button>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>Edit User</DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-red-600">
-                        Delete User
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            )}
-            )}
+                <TableRow key={user.id}>
+                  <TableCell>{user.fullName}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.phoneNumber}</TableCell>
+                  <TableCell>{user.paymentId}</TableCell>
+                  <TableCell>{user.bought ? "Yes" : "No"}</TableCell>
+                  <TableCell>{user.trial ? "Yes" : "No"}</TableCell>
+                  <TableCell>{user.trialDate}</TableCell>
+                  <TableCell>{user.payment ? "Yes" : "No"}</TableCell>
+                  <TableCell>{user.verified ? "Yes" : "No"}</TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <Link href={`users/${user.id}`}>
+                          <DropdownMenuItem>View User</DropdownMenuItem>
+                        </Link>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="text-red-600">
+                          Delete User
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>

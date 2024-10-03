@@ -20,15 +20,20 @@ model User {
   phoneNumber String? @unique
   userName String @default("no name")
   fullName String @default("no name")
-
-  trial Boolean @default(false)
-  bought Boolean @default(false)
-  verified Boolean @default(false)
-  payment Boolean @default(false)
-
-  trialDate String? 
   
+  trial Boolean @default(false)
+  trialDate String? 
+
+  enrolled Boolean @default(false)
+
   paymentId String? @unique
+  
+  payment Boolean @default(false)
+  verified Boolean @default(false)
+  bought Boolean @default(false)
+
+  validity DateTime?
+
 
   admin Boolean @default(false)
 }

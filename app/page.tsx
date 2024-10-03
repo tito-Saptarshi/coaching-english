@@ -21,10 +21,12 @@ export default function Home() {
                 </p>
               </div>
               <div className="space-x-4">
-                <Link href={'trial-class'}>
-                <Button>Book a Trial Class</Button>
+                <Link href={"trial-class"}>
+                  <Button>Book a Trial Class</Button>
                 </Link>
-                <Button variant="outline">Enroll Now</Button>
+                <Link href={"enroll"}>
+                  <Button variant="outline">Enroll Now</Button>
+                </Link>
               </div>
             </div>
           </div>
