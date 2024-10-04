@@ -1,18 +1,17 @@
-import { CourseInfo } from "@/app/components/user-id/CourseInfo";
-import { PayInfo } from "@/app/components/user-id/PayInfo";
+import { StudentDetailsCom } from "@/app/components/user-id/StudentDetailsCom";
 import prisma from "@/app/lib/db";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 
+// const student = {
+//   name: "Jane Doe",
+//   email: "jane.doe@example.com",
+//   phoneNumber: "+1 (555) 123-4567",
+//   trialClassTaken: true,
+//   trialClassDate: "2023-09-15",
+//   enrolled: true,
+//   feesPaid: false,
+//   transactionId: "TRX123456",
+//   receiptImage: "/placeholder.svg?height=300&width=400",
+// };
 async function getData(userId: string) {
   const data = await prisma.user.findUnique({
     where: {
@@ -46,20 +45,12 @@ export default async function StudentDetails({
   const data = await getData(params.id);
 
   // Mock data for the student
-  const student = {
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
-    phoneNumber: "+1 (555) 123-4567",
-    trialClassTaken: true,
-    trialClassDate: "2023-09-15",
-    enrolled: true,
-    feesPaid: false,
-    transactionId: "TRX123456",
-    receiptImage: "/placeholder.svg?height=300&width=400",
-  };
 
   return (
-    <Card className="w-full max-w-3xl mx-auto">
+    <div>
+      <StudentDetailsCom data={data} userId={params.id} />
+
+      {/* <Card className="w-full max-w-3xl mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl">Student Details</CardTitle>
         <CardDescription>
@@ -116,6 +107,7 @@ export default async function StudentDetails({
         </div>
       </CardContent>
       <PayInfo data={data} />
-    </Card>
+    </Card> */}
+    </div>
   );
 }

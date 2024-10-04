@@ -1,37 +1,40 @@
 "use client";
 
-import { confirmPayment } from "@/app/actions";
 import { User } from "@/app/lib/types";
 import { Button } from "@/components/ui/button";
 import { CardFooter } from "@/components/ui/card";
 import { Loader } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export function PayInfo({ data }: { data: User | null }) {
-  const [enrolled, setEnrolled] = useState(data?.enrolled);
+export function PayInfo({
+  data,
+  verified,
+  handleConfirmPayment,
+}: {
+  data: User | null;
+  enrolled: boolean | null;
+  payment: boolean | null;
+  verified: boolean | null;
+  bought: boolean | null;
+  handleConfirmPayment: () => void;
+}) {
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [payment, setPayment] = useState(data?.payment);
-  const [verified, setVerified] = useState(data?.verified);
-  const [bought, setBought] = useState(data?.bought);
+  // const handleClick = () => {
+  //   setisLaoding(true);
+  //   confirmPayment(data?.id || "", true);
 
-  const [isLoading, setisLaoding] = useState(false);
+  //   setEnrolled(!enrolled);
+  //   setPayment(!payment);
+  //   setVerified(!verified);
+  //   setBought(!bought);
+  //   setisLaoding(false);
+  // };
 
-  useEffect(() => {
-    setEnrolled(enrolled);
-    setPayment(payment);
-    setVerified(verified);
-    setBought(bought);
-  }, [data, enrolled, payment, verified, bought]);
-
-  const handleClick = () => {
-    setisLaoding(true);
-    confirmPayment(data?.id || "", true);
-
-    setEnrolled(!enrolled);
-    setPayment(!payment);
-    setVerified(!verified);
-    setBought(!bought);
-    setisLaoding(false);
+  const handleClick = async () => {
+    setIsLoading(true);
+    await handleConfirmPayment();
+    setIsLoading(false);
   };
 
   if (!data) {
@@ -39,15 +42,16 @@ export function PayInfo({ data }: { data: User | null }) {
   }
   return (
     <CardFooter>
+      {/* <p>payemnt verified : {verified ? <p>yes</p> : <p> no </p>}</p> */}
       {data?.payment ? (
         <Button
           variant="default"
           className="w-full"
           onClick={() => handleClick()}
-          disabled={isLoading}
+          disabled={isLoading || verified || false}
         >
           {isLoading ? (
-            <Loader className="animate-spin" /> // Show loader when isLoading is true
+            <Loader className="animate-spin" /> 
           ) : (
             "Verify Payment"
           )}

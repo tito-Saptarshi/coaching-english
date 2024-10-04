@@ -36,7 +36,6 @@ export async function bookTrial(formData: FormData) {
   }
 }
 
-// admin can confirm payment details
 export async function confirmPayment(userId: string, admin: boolean) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
@@ -48,7 +47,7 @@ export async function confirmPayment(userId: string, admin: boolean) {
   }
 
   try {
-    await prisma.user.update({
+    const updatedUser = await prisma.user.update({
       where: {
         id: userId,
       },
@@ -56,11 +55,22 @@ export async function confirmPayment(userId: string, admin: boolean) {
         verified: true,
         bought: true,
       },
+      select: {
+        id: true,
+        verified: true,
+        bought: true,
+        payment: true,
+        enrolled: true,
+        trial: true,
+        trialDate: true,
+        validity: true,
+      },
     });
 
     revalidatePath(`/users/${userId}`);
     return {
       message: "yes",
+      updatedUser, // Return the updated user data
     };
   } catch (error) {
     console.log(error);
@@ -69,6 +79,40 @@ export async function confirmPayment(userId: string, admin: boolean) {
     };
   }
 }
+
+// admin can confirm payment details
+// export async function confirmPayment(userId: string, admin: boolean) {
+//   const { getUser } = getKindeServerSession();
+//   const user = await getUser();
+//   if (!user) {
+//     return redirect("/api/auth/login");
+//   }
+//   if (!admin) {
+//     return redirect("/");
+//   }
+
+//   try {
+//     await prisma.user.update({
+//       where: {
+//         id: userId,
+//       },
+//       data: {
+//         verified: true,
+//         bought: true,
+//       },
+//     });
+
+//     revalidatePath(`/users/${userId}`);
+//     return {
+//       message: "yes",
+//     };
+//   } catch (error) {
+//     console.log(error);
+//     return {
+//       message: "no",
+//     };
+//   }
+// }
 
 export async function enrollUser(formData: FormData) {
   const { getUser } = getKindeServerSession();

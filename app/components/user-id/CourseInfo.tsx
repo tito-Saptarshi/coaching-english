@@ -3,29 +3,26 @@
 import { User } from "@/app/lib/types";
 import { Label } from "@/components/ui/label";
 import { Calendar, CheckCircle, XCircle } from "lucide-react";
-import { useEffect, useState } from "react";
 
-export function CourseInfo({ data }: { data: User | null }) {
-  const [trial, setTrial] = useState(data?.trial);
-  const [trialDate, setTrialDate] = useState(data?.trial);
-
-  const [enrolled, setEnrolled] = useState(data?.trialDate);
-
-  const [payment, setPayment] = useState(data?.payment);
-  const [verified, setVerified] = useState(data?.verified);
-  const [bought, setBought] = useState(data?.bought);
-  const [validity, setValidity] = useState(data?.validity);
-
-  useEffect(() => {
-    setTrial(trial);
-    setTrialDate(trialDate);
-    setEnrolled(enrolled);
-    setPayment(payment);
-    setVerified(verified);
-    setBought(bought);
-    setValidity(validity);
-  }, [data, trial, trialDate, enrolled, payment, verified, bought, validity]);
-
+export function CourseInfo({
+  data,
+  enrolled,
+  payment,
+  verified,
+  bought,
+  trial,
+  trialDate,
+  validity,
+}: {
+  data: User | null;
+  enrolled: boolean | null;
+  payment: boolean | null;
+  verified: boolean | null;
+  bought: boolean | null;
+  trial: boolean | null;
+  trialDate: string;
+  validity: Date | null | undefined;
+}) {
   if (!data) {
     return <div>No course information available.</div>;
   }
