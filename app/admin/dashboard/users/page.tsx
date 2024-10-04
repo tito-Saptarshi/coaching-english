@@ -16,6 +16,8 @@ async function getData() {
       trialDate: true,
       paymentId: true,
       admin: true,
+      enrolled: true,
+      validity: true,
     },
   });
   return data;

@@ -1,3 +1,5 @@
+import { CourseInfo } from "@/app/components/user-id/CourseInfo";
+import { PayInfo } from "@/app/components/user-id/PayInfo";
 import prisma from "@/app/lib/db";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +12,6 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, CheckCircle, XCircle } from "lucide-react";
 
 async function getData(userId: string) {
   const data = await prisma.user.findUnique({
@@ -90,82 +91,8 @@ export default async function StudentDetails({
           </div>
         </div>
         <Separator />
-        <div className="space-y-2">
-          <Label className="text-base">Course Information</Label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="flex items-center space-x-2">
-              <Label>Trial Class Taken</Label>
-              {data?.trial ? (
-                <CheckCircle className="h-5 w-5 text-green-500" />
-              ) : (
-                <XCircle className="h-5 w-5 text-red-500" />
-              )}
-            </div>
-            {data?.trialDate ? (
-              <div className="flex items-center space-x-2">
-                <Calendar className="h-5 w-5 text-muted-foreground" />
-                <span className="text-sm">{data?.trialDate}</span>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-2">
-                <Calendar className="h-5 w-5 text-muted-foreground" />
-                <p>
-                  <span className="text-sm mr-1">
-                    : no trial date picked 
-                  </span>
-                    <XCircle className="h-5 w-5 text-red-500 inline-block" />
-                </p>
-              </div>
-            )}
-            <div className="flex items-center space-x-2">
-              <Label>Enrolled for Course</Label>
-              {student.enrolled ? (
-                <CheckCircle className="h-5 w-5 text-green-500" />
-              ) : (
-                <XCircle className="h-5 w-5 text-red-500" />
-              )}
-            </div>
-            {student.enrolled && (
-              <div className="flex items-center space-x-2">
-                <p>
-                  Validity till :{"  "}
-                  <span className="text-sm">
-                    {" "}
-                    {data?.validity?.toLocaleString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </span>
-                </p>
-              </div>
-            )}
-            <div className="flex items-center space-x-2">
-              <Label>Bought Course</Label>
-              {data?.bought ? (
-                <CheckCircle className="h-5 w-5 text-green-500" />
-              ) : (
-                <XCircle className="h-5 w-5 text-red-500" />
-              )}
-            </div>
-            <div className="flex items-center space-x-2">
-              <Label>Payment made : </Label>
-              {data?.payment ? (
-                <CheckCircle className="h-5 w-5 text-green-500" />
-              ) : (
-                <XCircle className="h-5 w-5 text-red-500" />
-              )}
-            </div>
-            <div className="flex items-center space-x-2">
-              <Label>Payment verified</Label>
-              {data?.verified ? (
-                <CheckCircle className="h-5 w-5 text-green-500" />
-              ) : (
-                <XCircle className="h-5 w-5 text-red-500" />
-              )}
-            </div>
-          </div>
-        </div>
+
+        <CourseInfo data={data} />
         <Separator />
         <div className="space-y-4">
           <Label className="text-base">Payment Information</Label>
@@ -188,11 +115,7 @@ export default async function StudentDetails({
           </div>
         </div>
       </CardContent>
-      <CardFooter>
-        <Button variant="outline" className="w-full">
-          Verify Payment
-        </Button>
-      </CardFooter>
+      <PayInfo data={data} />
     </Card>
   );
 }

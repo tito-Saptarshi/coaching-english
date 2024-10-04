@@ -5,10 +5,12 @@ export type User = {
   userName?: string | null;
   fullName: string;
   trial: boolean;
-  bought: boolean;
-  verified: boolean;
-  payment: boolean;
-  admin: boolean;
   trialDate?: string | null;
+  enrolled: boolean;
   paymentId?: string | null;
+  payment: boolean;
+  verified: boolean;
+  bought: boolean;
+  validity?: Date | null; 
+  admin: boolean;
 };

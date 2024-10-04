@@ -3,6 +3,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import prisma from "./lib/db";
+import { revalidatePath } from "next/cache";
 
 export async function bookTrial(formData: FormData) {
   const { getUser } = getKindeServerSession();
@@ -53,8 +54,11 @@ export async function confirmPayment(userId: string, admin: boolean) {
       },
       data: {
         verified: true,
+        bought: true,
       },
     });
+
+    revalidatePath(`/users/${userId}`);
     return {
       message: "yes",
     };
@@ -118,7 +122,7 @@ export async function confirmPaymentUser(formData: FormData) {
       data: {
         paymentId: transactionId,
         validity: validityDate,
-        payment: true
+        payment: true,
       },
     });
     return { success: true, redirectTo: "/payment" };
