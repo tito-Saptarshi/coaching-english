@@ -9,31 +9,48 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  directUrl         = env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id String @id
-  email String @unique
+  id          String  @id
+  email       String  @unique
   phoneNumber String? @unique
-  userName String @default("no name")
-  fullName String @default("no name")
-  
-  trial Boolean @default(false)
-  trialDate String? 
+  userName    String  @default("no name")
+  fullName    String  @default("no name")
+
+  trial     Boolean @default(false)
+  trialDate String?
 
   enrolled Boolean @default(false)
 
   paymentId String? @unique
-  
-  payment Boolean @default(false)
+
+  payment  Boolean @default(false)
   verified Boolean @default(false)
-  bought Boolean @default(false)
+  bought   Boolean @default(false)
 
   validity DateTime?
 
-
   admin Boolean @default(false)
+}
+
+model MainClassDate {
+  id        String @id @default(uuid())
+  mainClass String
+}
+
+model TrailClassDate {
+  id              String   @id @default(uuid())
+  trialClass      String
+  optionalMessage String   @default("")
+  createdAt       DateTime @default(now())
+}
+
+model TestModel {
+  id    String @id @default(uuid())
+  place String
+  date  String
 }

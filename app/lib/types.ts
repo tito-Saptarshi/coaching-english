@@ -14,3 +14,9 @@ export type User = {
   validity?: Date | null; 
   admin: boolean;
 };
+
+export type TrialClass = {
+  id: string;
+  trialClass: string;
+  optionalMessage: string;
+}

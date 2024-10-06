@@ -175,3 +175,197 @@ export async function confirmPaymentUser(formData: FormData) {
     return { success: false, error: "Failed to book trial." };
   }
 }
+
+// create and modify dates
+export async function chooseTrialDates(formData: FormData, admin: boolean) {
+  const trialDate = formData.get("date") as string;
+  const message = formData.get("optionalMessage") as string;
+  console.log("Trial Date:", trialDate);
+  console.log("Message:", message);
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    console.log("chooseTrialDate");
+
+    console.log(trialDate);
+    console.log(message);
+
+    if (!user) {
+      return redirect("/api/auth/login");
+    }
+    if (!admin) {
+      return redirect("/");
+    }
+
+    const data = await prisma.trailClassDate.create({
+      data: {
+        trialClass: trialDate,
+        optionalMessage: message,
+      },
+    });
+    revalidatePath(`/create-trial-class`);
+    return {
+      message: "yes",
+      data, // Return the updated user data
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "no",
+    };
+  }
+}
+
+export async function deleteTrialDates(formData: FormData, admin: boolean) {
+  const trialDate = formData.get("date") as string;
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) {
+      return redirect("/api/auth/login");
+    }
+
+    if (!admin) {
+      return redirect("/");
+    }
+    await prisma.trailClassDate.deleteMany({
+      where: {
+        trialClass: trialDate,
+      },
+    });
+
+    await prisma.user.updateMany({
+      where: {
+        trialDate: trialDate,
+      },
+      data: {
+        trialDate: "re-scheduled",
+      },
+    });
+    revalidatePath(`/create-trial-class`);
+    return {
+      message: "yes",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "no",
+    };
+  }
+}
+
+export async function updateTrialDates(formData: FormData, admin: boolean) {
+  try {
+    const oldDate = formData.get("oldDate") as string;
+    const date = formData.get("date") as string;
+    const optionalMessage = formData.get("optionalMessage") as string;
+
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) {
+      return redirect("/api/auth/login");
+    }
+    if (!admin) {
+      return redirect("/");
+    }
+    await prisma.trailClassDate.updateMany({
+      where: {
+        trialClass: oldDate,
+      },
+      data: {
+        trialClass: date,
+        optionalMessage: optionalMessage,
+      },
+    });
+
+    await prisma.user.updateMany({
+      where: {
+        trialDate: oldDate,
+      },
+      data: {
+        trialDate: date,
+      },
+    });
+    revalidatePath(`/create-trial-class`);
+    return {
+      message: "yes",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "no",
+    };
+  }
+}
+
+export async function chooseMainDates(formData: FormData, admin: boolean) {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) {
+      return redirect("/api/auth/login");
+    }
+    if (!admin) {
+      return redirect("/");
+    }
+
+    const mainDate = formData.get("date") as string;
+    const message = formData.get("message") as string;
+
+    const data = await prisma.mainClassDate.create({
+      data: {
+        mainClass: mainDate,
+      },
+      select: {
+        id: true,
+        mainClass: true,
+      },
+    });
+
+    revalidatePath(`/admin/create-class`);
+    return {
+      message: "yes",
+      data, // Return the updated user data
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "no",
+    };
+  }
+}
+
+export async function deleteMainDates(mainDate: string, admin: boolean) {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) {
+      return redirect("/api/auth/login");
+    }
+
+    if (!admin) {
+      return redirect("/");
+    }
+    await prisma.mainClassDate.deleteMany({
+      where: {
+        mainClass: mainDate,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "no",
+    };
+  }
+}
+
+export async function testServerAction(id: string) {
+  await prisma.testModel.updateMany({
+    where: {
+      place: id,
+    },
+    data: {
+      date: id,
+    },
+  });
+}
