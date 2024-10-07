@@ -20,3 +20,9 @@ export type TrialClass = {
   trialClass: string;
   optionalMessage: string;
 }
+
+export type MainClass = {
+  id: string;
+  mainClass: string;
+  optionalMessage: string;
+}

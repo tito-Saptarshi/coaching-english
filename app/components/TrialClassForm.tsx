@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/select";
 import { bookTrial } from "../actions";
 import { useRouter } from "next/navigation";
-export function TrialClassForm() {
+import { TrialClass } from "../lib/types";
+export function TrialClassForm({ classData }: { classData: TrialClass[] }) {
   const router = useRouter();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -67,10 +69,11 @@ export function TrialClassForm() {
               <SelectValue placeholder="Select a subject" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="math">Mathematics</SelectItem>
-              <SelectItem value="science">Science</SelectItem>
-              <SelectItem value="english">English</SelectItem>
-              <SelectItem value="history">History</SelectItem>
+              {classData.map((classItem) => (
+                <SelectItem value={classItem.trialClass} key={classItem.id}>
+                  {classItem.trialClass}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

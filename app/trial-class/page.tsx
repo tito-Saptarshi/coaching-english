@@ -20,10 +20,26 @@ async function getData(userId: string | undefined) {
   return data;
 }
 
+async function getClassData() {
+  return await prisma.trailClassDate.findMany({
+    select: {
+      id: true,
+      trialClass: true,
+      optionalMessage: true,
+    },
+    orderBy : {
+      createdAt: "desc",
+    },
+  })
+}
+
 export default async function TrialClass() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   const data = await getData(user?.id);
+  const classData = await getClassData();
+  console.log("classData " + classData);
+  
   if (!user) return redirect("/api/auth/login");
 
 //   if (data?.trial || data?.bought) return "/";
@@ -39,7 +55,7 @@ export default async function TrialClass() {
             Choose your preferred date and time for the trial class
           </p>
         </div>
-        <TrialClassForm />
+        <TrialClassForm classData={classData}/>
       </div>
     </div>
   );

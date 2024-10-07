@@ -300,6 +300,9 @@ export async function updateTrialDates(formData: FormData, admin: boolean) {
 
 export async function chooseMainDates(formData: FormData, admin: boolean) {
   try {
+    const mainDate = formData.get("date") as string;
+    const optionalMessage = formData.get("optionalMessage") as string;
+
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     if (!user) {
@@ -309,23 +312,16 @@ export async function chooseMainDates(formData: FormData, admin: boolean) {
       return redirect("/");
     }
 
-    const mainDate = formData.get("date") as string;
-    const message = formData.get("message") as string;
-
-    const data = await prisma.mainClassDate.create({
+    await prisma.mainClassDate.create({
       data: {
         mainClass: mainDate,
-      },
-      select: {
-        id: true,
-        mainClass: true,
+        optionalMessage: optionalMessage,
       },
     });
 
-    revalidatePath(`/admin/create-class`);
+    revalidatePath(`/create-main-class`);
     return {
       message: "yes",
-      data, // Return the updated user data
     };
   } catch (error) {
     console.log(error);
@@ -335,8 +331,10 @@ export async function chooseMainDates(formData: FormData, admin: boolean) {
   }
 }
 
-export async function deleteMainDates(mainDate: string, admin: boolean) {
+export async function deleteMainDates(formData: FormData, admin: boolean) {
   try {
+    const mainDate = formData.get("date") as string;
+
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     if (!user) {
@@ -351,6 +349,77 @@ export async function deleteMainDates(mainDate: string, admin: boolean) {
         mainClass: mainDate,
       },
     });
+    revalidatePath(`/create-main-class`);
+    return {
+      message: "yes",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "no",
+    };
+  }
+}
+
+export async function updateMainDates(formData: FormData, admin: boolean) {
+  try {
+    const oldDate = formData.get("oldDate") as string;
+    const date = formData.get("date") as string;
+    const optionalMessage = formData.get("optionalMessage") as string;
+
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) {
+      return redirect("/api/auth/login");
+    }
+    if (!admin) {
+      return redirect("/");
+    }
+    await prisma.mainClassDate.updateMany({
+      where: {
+        mainClass: oldDate,
+      },
+      data: {
+        mainClass: date,
+        optionalMessage: optionalMessage,
+      },
+    });
+
+    revalidatePath(`/user/profile`);
+    return {
+      message: "yes",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "no",
+    };
+  }
+}
+
+export async function updateUser(formData: FormData) {
+  const name = formData.get("name") as string;
+  const phone = formData.get("phone") as string;
+
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+  try {
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        fullName: name,
+        phoneNumber: phone,
+      },
+    });
+    revalidatePath(`/create-main-class`);
+    return {
+      message: "yes",
+    };
   } catch (error) {
     console.log(error);
     return {

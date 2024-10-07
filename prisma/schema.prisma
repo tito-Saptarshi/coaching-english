@@ -38,8 +38,10 @@ model User {
 }
 
 model MainClassDate {
-  id        String @id @default(uuid())
-  mainClass String
+  id              String   @id @default(uuid())
+  mainClass       String
+  optionalMessage String   @default("")
+  createdAt       DateTime @default(now())
 }
 
 model TrailClassDate {
