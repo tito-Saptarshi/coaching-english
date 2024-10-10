@@ -26,12 +26,16 @@ import { QrCode, Copy, CheckCircle2, AlertTriangle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { confirmPaymentUser } from "../actions";
 import { useRouter } from "next/navigation";
+import { BankDetails } from "../lib/types";
+import Image from "next/image";
+import { UploadDropzone } from "./Uploadthing";
 
-export function PaymentsForm() {
+export function PaymentsForm({ paymentData }: { paymentData: BankDetails }) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [transactionId, setTransactionId] = useState("");
   const [receiptImage, setReceiptImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<null | string>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
@@ -43,8 +47,6 @@ export function PaymentsForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Here you would typically send the transaction ID and receipt image to your server
-    console.log("Transaction ID:", transactionId);
     // console.log('Receipt Image:', receiptImage)
     // Reset form after submission
     setTransactionId("");
@@ -55,6 +57,9 @@ export function PaymentsForm() {
     setIsConfirmationOpen(true);
     const formData = new FormData(e.currentTarget);
     formData.get("paymentId") as string | null;
+    if (imageUrl) {
+      formData.append("transactionImgUrl", imageUrl);
+    }
     const result = await confirmPaymentUser(formData); //
     if (!result) {
       console.error("No response from the server.");
@@ -72,6 +77,7 @@ export function PaymentsForm() {
 
   const ConfirmPaymentForm = () => (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <input type="hidden" name="transactionImgUrl" value={imageUrl || ""}/>
       <div>
         <Label htmlFor="transactionId">Transaction ID</Label>
         <Input
@@ -90,6 +96,36 @@ export function PaymentsForm() {
           onChange={(e) => setReceiptImage(e.target.files?.[0] || null)}
           required
         /> */}
+        {imageUrl === null ? (
+          <UploadDropzone
+            className="ut-button:ut-readying:bg-primary/50 ut-label:text-primary ut-button:ut-uploading:bg-primary/50 ut-button:ut-uploading:after:bg-primary "
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              setImageUrl(res[0].url);
+            }}
+            onUploadError={(error: Error) => {
+              console.error("Upload Error:", error);
+              alert("Error during upload. Please try again.");
+            }}
+          />
+        ) : (
+          <div className="flex flex-col items-end">
+            <Image
+              src={imageUrl}
+              alt="uploaded image"
+              width={500}
+              height={400}
+              className="h-80 rounded-lg w-full object-contain -mb-5"
+            />
+            <Button
+              className="w-20"
+              type="button"
+              onClick={() => setImageUrl(null)}
+            >
+              Remove
+            </Button>
+          </div>
+        )}
       </div>
       <div>
         <Label htmlFor="comments">Additional Comments (Optional)</Label>

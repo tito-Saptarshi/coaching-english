@@ -26,3 +26,18 @@ export type MainClass = {
   mainClass: string;
   optionalMessage: string;
 }
+
+export type PaymentDetails = {
+  id: string;
+  mainClass: string;
+  optionalMessage: string;
+}
+
+export type BankDetails = {
+  id: string;
+  accountNumber?: string | null;
+  accountName?: string | null;
+  bankName?: string | null;
+  ifscCode?: string | null;
+  scannerQR?: string | null;
+};

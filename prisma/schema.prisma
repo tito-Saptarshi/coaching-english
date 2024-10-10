@@ -27,6 +27,7 @@ model User {
   enrolled Boolean @default(false)
 
   paymentId String? @unique
+  transactionImgUrl String?
 
   payment  Boolean @default(false)
   verified Boolean @default(false)
@@ -49,6 +50,15 @@ model TrailClassDate {
   trialClass      String
   optionalMessage String   @default("")
   createdAt       DateTime @default(now())
+}
+
+model BankDetails {
+  id            String  @id 
+  accountNumber String?
+  accountName   String?
+  bankName      String?
+  ifscCode      String?
+  scannerQR     String?
 }
 
 model TestModel {

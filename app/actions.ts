@@ -158,6 +158,8 @@ export async function confirmPaymentUser(formData: FormData) {
   }
 
   const transactionId = formData.get("paymentId") as string;
+  const transactionImgUrl = formData.get("transactionImgUrl") as string;
+
   try {
     await prisma.user.update({
       where: {
@@ -167,9 +169,10 @@ export async function confirmPaymentUser(formData: FormData) {
         paymentId: transactionId,
         validity: validityDate,
         payment: true,
+        transactionImgUrl: transactionImgUrl,
       },
     });
-    return { success: true, redirectTo: "/payment" };
+    return { success: true, redirectTo: "/user/profile" };
   } catch (error) {
     console.log("confirmPaymentUser error:  " + error);
     return { success: false, error: "Failed to book trial." };
@@ -417,6 +420,73 @@ export async function updateUser(formData: FormData) {
       },
     });
     revalidatePath(`/create-main-class`);
+    return {
+      message: "yes",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "no",
+    };
+  }
+}
+
+export async function updatePaymentDetails(formData: FormData) {
+  const paymentId = formData.get("paymentId") as string;
+
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+  try {
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        paymentId: paymentId,
+      },
+    });
+
+    redirect("/user/profile");
+    return {
+      message: "yes",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "no",
+    };
+  }
+}
+
+export async function updateBankDetails(formData: FormData, admin: boolean) {
+  const accountNumber = formData.get("accountNumber") as string;
+  const accountName = formData.get("accountName") as string;
+  const bankName = formData.get("bankName") as string;
+  const ifscCode = formData.get("ifscCode") as string;
+
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+  if (!admin) {
+    return redirect("/api/auth/login");
+  }
+  try {
+    await prisma.bankDetails.create({
+      data: {
+        id: user.id,
+        accountNumber: accountNumber,
+        accountName: accountName,
+        ifscCode: ifscCode,
+        bankName: bankName,
+      },
+    });
+
+    redirect("/user/profile");
     return {
       message: "yes",
     };

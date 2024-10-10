@@ -122,6 +122,21 @@ export default async function StudentProfile() {
                 )}
               </div>
             </div>
+            <div>
+              <Label>Forgot to Upload Payment Transaction ID or Payment Receipt  </Label>
+              
+                  <div className="flex flex-col">
+                   
+                    <Link
+                      className="text-red-900 hover:font-bold"
+                      href={"/payment/continue"}
+                    >
+                      Click here to reupload payment details
+                    </Link>{" "}
+                  </div>
+                
+        
+            </div>
           </div>
         </CardContent>
         <CardFooter className="flex justify-end space-x-2">
