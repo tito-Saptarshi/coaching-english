@@ -18,6 +18,7 @@ async function getData() {
       admin: true,
       enrolled: true,
       validity: true,
+      transactionImgUrl: true,
     },
   });
   return data;
