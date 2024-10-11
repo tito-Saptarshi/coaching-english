@@ -13,6 +13,7 @@ export type User = {
   bought: boolean;
   validity?: Date | null; 
   admin: boolean;
+  transactionImgUrl: string | null;
 };
 
 export type TrialClass = {

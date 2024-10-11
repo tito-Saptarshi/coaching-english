@@ -167,9 +167,9 @@ export async function confirmPaymentUser(formData: FormData) {
       },
       data: {
         paymentId: transactionId,
+        atransactionImgUrl: transactionImgUrl,
         validity: validityDate,
         payment: true,
-        transactionImgUrl: transactionImgUrl,
       },
     });
     return { success: true, redirectTo: "/user/profile" };

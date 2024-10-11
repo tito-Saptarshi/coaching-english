@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 import { useState } from "react";
 const student = {
   name: "Jane Doe",
@@ -103,12 +104,20 @@ export function StudentDetailsCom({
           <div className="space-y-2">
             <Label htmlFor="receipt">Receipt</Label>
             <div className="border rounded-lg overflow-hidden">
-              <img
-                id="receipt"
-                src={student.receiptImage}
-                alt="Payment Receipt"
-                className="w-full h-auto object-cover"
-              />
+              {data?.transactionImgUrl ? (
+               <div className="relative w-full h-[300px] lg:h-[400px] bg-black overflow-hidden">
+                  <Image
+                    src={data?.transactionImgUrl}
+                    alt={data?.transactionImgUrl}
+                    className="absolute inset-0 w-full h-full object-contain"
+                    layout="fill"
+                  />
+                </div>
+              ) : (
+                <div>
+                  <h1>no receipt uploaded</h1>
+                </div>
+              )}
             </div>
           </div>
         </div>

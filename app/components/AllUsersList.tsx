@@ -30,17 +30,26 @@ interface AllUsersListProps {
 export function AllUsersList({ users }: AllUsersListProps) {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [filterSubscribed, setFilterSubscribed] = useState<boolean>(false);
-
+  const [filterSubscribed, setFilterSubscribed] = useState<boolean | null>(
+    null
+  );
+  const [filterPaidNotVerified, setFilterPaidNotVerified] =
+    useState<boolean>(false);
   const filteredUsers = users
     .filter(
       (user) =>
         user.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .filter((user) =>
-      filterSubscribed === null ? true : user.bought === filterSubscribed
-    );
+    .filter((user) => {
+      if (filterSubscribed !== null && !filterPaidNotVerified) {
+        return user.bought === filterSubscribed;
+      }
+      if (filterPaidNotVerified) {
+        return user.payment && !user.verified;
+      }
+      return true; // If no specific filter is applied, return all users.
+    });
   return (
     <div className="container mx-auto p-4 space-y-4">
       <h1 className="text-2xl font-bold">Coaching Institute Admin Dashboard</h1>
@@ -64,14 +73,37 @@ export function AllUsersList({ users }: AllUsersListProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => setFilterSubscribed(true)}>
+            <DropdownMenuItem
+              onClick={() => {
+                setFilterSubscribed(null);
+                setFilterPaidNotVerified(false);
+              }}
+            >
               All
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setFilterSubscribed(true)}>
+            <DropdownMenuItem
+              onClick={() => {
+                setFilterSubscribed(true);
+                setFilterPaidNotVerified(false);
+              }}
+            >
               Subscribed
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setFilterSubscribed(false)}>
+            <DropdownMenuItem
+              onClick={() => {
+                setFilterSubscribed(false);
+                setFilterPaidNotVerified(false);
+              }}
+            >
               Not Subscribed
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                setFilterPaidNotVerified(true);
+                setFilterSubscribed(null);
+              }}
+            >
+              Paid but Not Verified
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

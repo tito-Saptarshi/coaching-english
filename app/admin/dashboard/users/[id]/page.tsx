@@ -32,6 +32,7 @@ async function getData(userId: string) {
       admin: true,
       validity: true,
       enrolled: true,
+      transactionImgUrl: true,
     },
   });
   return data;

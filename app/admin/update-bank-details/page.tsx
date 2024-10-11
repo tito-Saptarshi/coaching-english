@@ -1,11 +1,14 @@
 "use client";
 import { updateBankDetails } from "@/app/actions";
+import { UploadDropzone } from "@/app/components/Uploadthing";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { BaseNextResponse } from "next/dist/server/base-http";
+import Image from "next/image";
+import { useState } from "react";
 
 export default function UpdateBankDetails() {
+  const [imageUrl, setImageUrl] = useState<null | string>(null);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -79,14 +82,36 @@ export default function UpdateBankDetails() {
             </div>
             <div>
               <Label htmlFor="phone">Upload QR</Label>
-              <Input
-                id="phone"
-                name="phone"
-                type="file"
-                className="mt-1"
-                disabled
-                placeholder="+EDUC0001234"
-              />
+              {imageUrl === null ? (
+                <UploadDropzone
+                  className="ut-button:ut-readying:bg-primary/50 ut-label:text-primary ut-button:ut-uploading:bg-primary/50 ut-button:ut-uploading:after:bg-primary "
+                  endpoint="imageUploader"
+                  onClientUploadComplete={(res) => {
+                    setImageUrl(res[0].url);
+                  }}
+                  onUploadError={(error: Error) => {
+                    console.error("Upload Error:", error);
+                    alert("Error during upload. Please try again.");
+                  }}
+                />
+              ) : (
+                <div className="flex flex-col items-end">
+                  <Image
+                    src={imageUrl}
+                    alt="uploaded image"
+                    width={500}
+                    height={400}
+                    className="h-80 rounded-lg w-full object-contain -mb-5"
+                  />
+                  <Button
+                    className="w-20"
+                    type="button"
+                    onClick={() => setImageUrl(null)}
+                  >
+                    Remove
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
 
