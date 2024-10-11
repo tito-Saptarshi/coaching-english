@@ -167,7 +167,7 @@ export async function confirmPaymentUser(formData: FormData) {
       },
       data: {
         paymentId: transactionId,
-        atransactionImgUrl: transactionImgUrl,
+        transactionImgUrl: transactionImgUrl,
         validity: validityDate,
         payment: true,
       },
