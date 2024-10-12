@@ -12,8 +12,11 @@ import { Label } from "@/components/ui/label";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Clock } from "lucide-react";
 import Link from "next/link";
+import { unstable_noStore as noStore } from "next/cache";
 
-async function getData(userId: string) {
+async function getData(userId: string) 
+{
+  noStore();
   return await prisma.user.findUnique({
     where: {
       id: userId,

@@ -2,8 +2,11 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { PaymentsForm } from "../components/PaymentsForms";
 import prisma from "../lib/db";
 import { redirect } from "next/navigation";
+import { unstable_noStore as noStore } from "next/cache";
 
 async function getData(userId: string) {
+  
+  noStore();
   return await prisma.bankDetails.findUnique({
     where: {
       id: userId,

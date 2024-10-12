@@ -2,8 +2,10 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { TrialClassForm } from "../components/TrialClassForm";
 import { redirect } from "next/navigation";
 import prisma from "../lib/db";
+import { unstable_noStore as noStore } from "next/cache";
 
 async function getData(userId: string | undefined) {
+  noStore();
   const data = await prisma.user.findUnique({
     where: {
       id: userId,
@@ -21,6 +23,7 @@ async function getData(userId: string | undefined) {
 }
 
 async function getClassData() {
+  noStore();
   return await prisma.trailClassDate.findMany({
     select: {
       id: true,
