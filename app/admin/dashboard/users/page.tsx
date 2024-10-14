@@ -19,6 +19,7 @@ async function getData() {
       enrolled: true,
       validity: true,
       transactionImgUrl: true,
+      optionalPaymentMessage: true,
     },
   });
   return data;
@@ -70,7 +71,7 @@ const users = [
 export default async function AllUsers() {
 
   const data = await getData();
-  console.log(data);
+  // console.log(data);
   
 
   return <AllUsersList users={data} />;

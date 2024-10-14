@@ -59,6 +59,7 @@ export function ClassCard({ trialData }: { trialData: TrialClass[] }) {
     const formData = new FormData(e.currentTarget);
     formData.get("oldDate") as string | null;
     formData.get("date") as string | null;
+    formData.get("classLink") as string | null;
     formData.get("optionalMessage") as string | null;
 
     await updateTrialDates(formData, true);
@@ -85,6 +86,10 @@ export function ClassCard({ trialData }: { trialData: TrialClass[] }) {
                     <h2 className="text-base sm:text-lg font-semibold">
                       {classItem.trialClass}
                     </h2>
+                    <h2 className="text-base  inline-block">
+                      <span className="font-semibold text-sm">Class Link :</span> {classItem.trialClassLink}
+                    </h2>
+                  
                     {/* <p className="text-sm text-muted-foreground flex items-center mt-1">
                       <Clock className="mr-1 h-3 w-3" />
                       {classItem.time}
@@ -124,6 +129,14 @@ export function ClassCard({ trialData }: { trialData: TrialClass[] }) {
                                 New Trial Date and Time
                               </Label>
                               <Input id="date" name="date" />
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-2 ">
+                            <div className="grid flex-1 gap-2 py-2">
+                              <Label htmlFor="date">
+                                Update Link
+                              </Label>
+                              <Input id="date" name="classLink" />
                             </div>
                           </div>
                           <div className="flex items-center space-x-2">

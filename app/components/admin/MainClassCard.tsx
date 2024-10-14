@@ -23,9 +23,9 @@ export function MainClassCard({ mainData }: { mainData: MainClass[] }) {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("handle submit running o click");
+    // console.log("handle submit running o click");
     
-    console.log("Form submitted!");
+    // console.log("Form submitted!");
 
     const formData = new FormData(event.currentTarget);
     formData.get("date") as string | null;

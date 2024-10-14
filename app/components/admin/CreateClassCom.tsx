@@ -26,14 +26,15 @@ export function CreateClassCom({ trialData }: { trialData: TrialClass[] }) {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log("Form submitted!");
+    // console.log("Form submitted!");
 
     const formData = new FormData(event.currentTarget);
     const trialDate = formData.get("date") as string | null;
     const message = formData.get("optionalMessage") as string | null;
+    formData.get("classLink") as string | null;
 
-    console.log("Trial Date:", trialDate);
-    console.log("Message:", message);
+    // console.log("Trial Date:", trialDate);
+    // console.log("Message:", message);
 
     const data2 = await chooseTrialDates(formData, true);
     if (data2.message === "yes" && data2.data) {
@@ -62,6 +63,12 @@ export function CreateClassCom({ trialData }: { trialData: TrialClass[] }) {
                 <div className="grid flex-1 gap-2 py-2">
                   <Label htmlFor="date">Trial Date and Time</Label>
                   <Input id="date" name="date" />
+                </div>
+              </div>
+              <div className="flex items-center space-x-2 ">
+                <div className="grid flex-1 gap-2 py-2">
+                  <Label htmlFor="date">Class Link</Label>
+                  <Input id="date" name="classLink" />
                 </div>
               </div>
               <div className="flex items-center space-x-2">

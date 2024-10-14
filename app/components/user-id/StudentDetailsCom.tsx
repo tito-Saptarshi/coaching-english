@@ -4,6 +4,7 @@ import { confirmPayment } from "@/app/actions";
 import { CourseInfo } from "@/app/components/user-id/CourseInfo";
 import { PayInfo } from "@/app/components/user-id/PayInfo";
 import { User } from "@/app/lib/types";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,10 +12,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import { useState } from "react";
+import { CancelPayment } from "./CancelPayment";
 const student = {
   name: "Jane Doe",
   email: "jane.doe@example.com",
@@ -33,6 +44,9 @@ export function StudentDetailsCom({
   data: User | null;
   userId: string;
 }) {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [declineReason, setDeclineReason] = useState("");
+
   const [enrolled, setEnrolled] = useState(data?.enrolled);
   const [payment, setPayment] = useState(data?.payment);
   const [verified, setVerified] = useState(data?.verified);
@@ -48,6 +62,24 @@ export function StudentDetailsCom({
       setBought(updatedUser.bought);
     }
   };
+  const candelPayment = async () => {
+    const response = await confirmPayment(userId, true);
+    if (response.message === "yes" && response.updatedUser) {
+      const updatedUser = response.updatedUser;
+      setEnrolled(updatedUser.enrolled);
+      setPayment(updatedUser.payment);
+      setVerified(updatedUser.verified);
+      setBought(updatedUser.bought);
+    }
+  };
+
+
+  const handleDeclinePayment = async () => {
+    // Handle decline logic here
+    console.log(`Declined for reason: ${declineReason}`);
+    setOpenDialog(false);
+  };
+
   return (
     <Card className="w-full max-w-3xl mx-auto">
       <CardHeader>
@@ -105,7 +137,7 @@ export function StudentDetailsCom({
             <Label htmlFor="receipt">Receipt</Label>
             <div className="border rounded-lg overflow-hidden">
               {data?.transactionImgUrl ? (
-               <div className="relative w-full h-[300px] lg:h-[400px] bg-black overflow-hidden">
+                <div className="relative w-full h-[300px] lg:h-[400px] bg-black overflow-hidden">
                   <Image
                     src={data?.transactionImgUrl}
                     alt={data?.transactionImgUrl}
@@ -130,6 +162,46 @@ export function StudentDetailsCom({
         bought={bought ?? null}
         handleConfirmPayment={handleConfirmPayment}
       />
+
+
+      <CancelPayment userId={userId} cancelPayment={cancelPayment}/>
+
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+        <DialogTrigger asChild>
+          <Button className="m-2 w-1/2 mx-auto justify-center">Decline</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Decline Payment</DialogTitle>
+          </DialogHeader>
+          <form action="">
+            <div className="space-y-4"> 
+              <p>Are you sure you want to decline the payment?</p>
+              <div>
+                <Label htmlFor="reason" className="my-2">
+                  Reason for declining
+                </Label>
+                <Textarea
+                  id="reason"
+                  placeholder="Enter reason here..."
+                  className="m-2"
+                  name="reason"
+                  value={declineReason}
+                  onChange={(e) => setDeclineReason(e.target.value)}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="secondary" onClick={() => setOpenDialog(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" variant="destructive">
+                Confirm Decline
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

@@ -18,7 +18,7 @@ async function getData() {
 
 export default async function CreateMainClass() {
   const data = await getData();
-  console.log(data);
+  // console.log(data);
 
   return (
     <div>

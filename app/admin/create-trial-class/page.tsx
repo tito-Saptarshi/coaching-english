@@ -8,6 +8,7 @@ async function getData() {
       id: true,
       trialClass: true,
       optionalMessage: true,
+      trialClassLink: true,
     },
     orderBy: {
       createdAt: "desc",
@@ -17,7 +18,7 @@ async function getData() {
 
 export default async function CreateTrialClass() {
   const data = await getData();
-  console.log(data);
+  // console.log(data);
 
   return (
     <div>

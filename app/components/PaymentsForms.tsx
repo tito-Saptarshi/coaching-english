@@ -170,7 +170,7 @@ export function PaymentsForm({ paymentData }: { paymentData: BankDetails }) {
                 <h3 className="font-semibold mb-1">Account Number</h3>
                 <div className="flex items-center space-x-2">
                   <p className="bg-muted p-2 rounded-md flex-grow">
-                    1234567890
+                    {paymentData?.accountNumber}
                   </p>
                   <Button
                     variant="outline"
@@ -188,16 +188,16 @@ export function PaymentsForm({ paymentData }: { paymentData: BankDetails }) {
               <div>
                 <h3 className="font-semibold mb-1">Account Name</h3>
                 <p className="bg-muted p-2 rounded-md">
-                  Excellence Coaching Institute
+                 {paymentData?.accountName}
                 </p>
               </div>
               <div>
                 <h3 className="font-semibold mb-1">Bank Name</h3>
-                <p className="bg-muted p-2 rounded-md">Education Bank</p>
+                <p className="bg-muted p-2 rounded-md">{paymentData?.bankName}</p>
               </div>
               <div>
                 <h3 className="font-semibold mb-1">IFSC Code</h3>
-                <p className="bg-muted p-2 rounded-md">EDUC0001234</p>
+                <p className="bg-muted p-2 rounded-md">{paymentData?.ifscCode}</p>
               </div>
             </div>
           </CardContent>

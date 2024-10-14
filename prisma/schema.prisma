@@ -26,9 +26,10 @@ model User {
 
   enrolled Boolean @default(false)
 
-  paymentId String? @unique
+  paymentId         String? @unique
   transactionImgUrl String?
-
+  optionalPaymentMessage String?
+  
   payment  Boolean @default(false)
   verified Boolean @default(false)
   bought   Boolean @default(false)
@@ -48,12 +49,13 @@ model MainClassDate {
 model TrailClassDate {
   id              String   @id @default(uuid())
   trialClass      String
+  trialClassLink  String   @default("Trial Class Link will be provided shortly")
   optionalMessage String   @default("")
   createdAt       DateTime @default(now())
 }
 
 model BankDetails {
-  id            String  @id 
+  id            String  @id
   accountNumber String?
   accountName   String?
   bankName      String?

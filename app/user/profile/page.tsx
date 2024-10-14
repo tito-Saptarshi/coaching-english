@@ -14,8 +14,7 @@ import { Clock } from "lucide-react";
 import Link from "next/link";
 import { unstable_noStore as noStore } from "next/cache";
 
-async function getData(userId: string) 
-{
+async function getData(userId: string) {
   noStore();
   return await prisma.user.findUnique({
     where: {
@@ -60,7 +59,7 @@ export default async function StudentProfile() {
             <CardTitle className="text-2xl font-bold">
               {user?.fullName}
             </CardTitle>
-            <p className="text-muted-foreground">{student.studentId}</p>
+            <p className="text-muted-foreground">Click EDIT PROFILE to update your namer</p>
           </div>
         </CardHeader>
         <CardContent>
@@ -71,7 +70,7 @@ export default async function StudentProfile() {
             </div>
             <div>
               <Label>Phone Number</Label>
-              <p className="text-sm">{user?.phoneNumber}</p>
+              <p className="text-sm">{user?.phoneNumber ?? "Click EDIT PROFILE to add / update phone number"}</p>
             </div>
             <div>
               <Label>Payment Status</Label>
@@ -85,7 +84,9 @@ export default async function StudentProfile() {
                     <Clock className="h-4 w-4 ml-1 inline" />
                   </div>
                 ) : (
-                  <div className="flex items-center">not paid</div>
+                  <div className="flex items-center">
+                    yet to enroll / not paid
+                  </div>
                 )}
               </div>
             </div>
@@ -111,8 +112,10 @@ export default async function StudentProfile() {
             <div>
               <Label>Trail Class</Label>
               <div className="text-sm">
-                {user?.enrolled == true ? (
-                  "Trial class has already been taken"
+                {user?.trial == true ? (
+                  <div>
+                    <p> Already applied for trial class</p>
+                  </div>
                 ) : (
                   <div className="flex flex-col">
                     <Link
@@ -125,21 +128,24 @@ export default async function StudentProfile() {
                 )}
               </div>
             </div>
-            <div>
-              <Label>Forgot to Upload Payment Transaction ID or Payment Receipt  </Label>
-              
-                  <div className="flex flex-col">
-                   
-                    <Link
-                      className="text-red-900 hover:font-bold"
-                      href={"/payment/continue"}
-                    >
-                      Click here to reupload payment details
-                    </Link>{" "}
-                  </div>
-                
-        
-            </div>
+
+            {user?.enrolled && (
+              <div>
+                <Label>
+                  Forgot to Upload Payment Transaction ID or Payment Receipt{" "}
+                </Label>
+
+                <div className="flex flex-col">
+                  <Link
+                    className="text-red-900 hover:font-bold"
+                    href={"/payment/continue"}
+                  >
+                    Click here to reupload payment details
+                  </Link>
+                  
+                </div>
+              </div>
+            )}
           </div>
         </CardContent>
         <CardFooter className="flex justify-end space-x-2">

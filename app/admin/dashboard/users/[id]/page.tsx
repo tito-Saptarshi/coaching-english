@@ -17,23 +17,6 @@ async function getData(userId: string) {
     where: {
       id: userId,
     },
-    select: {
-      id: true,
-      email: true,
-      phoneNumber: true,
-      userName: true,
-      fullName: true,
-      trial: true,
-      bought: true,
-      verified: true,
-      payment: true,
-      trialDate: true,
-      paymentId: true,
-      admin: true,
-      validity: true,
-      enrolled: true,
-      transactionImgUrl: true,
-    },
   });
   return data;
 }

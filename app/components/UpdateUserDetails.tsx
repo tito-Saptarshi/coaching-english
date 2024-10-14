@@ -19,7 +19,7 @@ export function UpdateUserDetails() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log("Form submitted!");
+    // console.log("Form submitted!");
 
     const formData = new FormData(event.currentTarget);
     formData.get("name") as string | null;

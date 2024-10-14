@@ -29,7 +29,7 @@ export function TrialClassForm({ classData }: { classData: TrialClass[] }) {
     }
 
     if (result.success) {
-      router.push(result.redirectTo || "/");
+      router.push(result.redirectTo || "/trial-class/confirmation");
     } else if (result.redirectTo) {
       router.push(result.redirectTo); // Handle redirect if not logged in
     } else {

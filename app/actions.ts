@@ -29,7 +29,7 @@ export async function bookTrial(formData: FormData) {
       },
     });
 
-    return { success: true, redirectTo: "/" };
+    return { success: true, redirectTo: "/trial-class/confirmation" };
   } catch (error) {
     console.log(error);
     return { success: false, error: "Failed to book trial." };
@@ -183,6 +183,7 @@ export async function confirmPaymentUser(formData: FormData) {
 export async function chooseTrialDates(formData: FormData, admin: boolean) {
   const trialDate = formData.get("date") as string;
   const message = formData.get("optionalMessage") as string;
+  const classLink = formData.get("classLink") as string;
   console.log("Trial Date:", trialDate);
   console.log("Message:", message);
   try {
@@ -203,6 +204,7 @@ export async function chooseTrialDates(formData: FormData, admin: boolean) {
     const data = await prisma.trailClassDate.create({
       data: {
         trialClass: trialDate,
+        trialClassLink: classLink,
         optionalMessage: message,
       },
     });
@@ -261,6 +263,7 @@ export async function updateTrialDates(formData: FormData, admin: boolean) {
   try {
     const oldDate = formData.get("oldDate") as string;
     const date = formData.get("date") as string;
+    const classLink = formData.get("classLink") as string;
     const optionalMessage = formData.get("optionalMessage") as string;
 
     const { getUser } = getKindeServerSession();
@@ -278,6 +281,7 @@ export async function updateTrialDates(formData: FormData, admin: boolean) {
       data: {
         trialClass: date,
         optionalMessage: optionalMessage,
+        trialClassLink: classLink,
       },
     });
 
@@ -433,7 +437,8 @@ export async function updateUser(formData: FormData) {
 
 export async function updatePaymentDetails(formData: FormData) {
   const paymentId = formData.get("paymentId") as string;
-
+  const transactionImgUrl = formData.get("transactionImgUrl") as string;
+  const comments = formData.get("comments") as string;
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   if (!user) {
@@ -446,18 +451,18 @@ export async function updatePaymentDetails(formData: FormData) {
       },
       data: {
         paymentId: paymentId,
+        transactionImgUrl: transactionImgUrl,
+        optionalPaymentMessage: comments,
+        enrolled: true,
+        payment: true,
       },
     });
 
-    redirect("/user/profile");
-    return {
-      message: "yes",
-    };
+    return { success: true, redirectTo: "/user/profile" };
   } catch (error) {
     console.log(error);
-    return {
-      message: "no",
-    };
+    console.log("confirmPaymentUser error:  " + error);
+    return { success: false, error: "Failed to update transaction details." };
   }
 }
 
@@ -483,6 +488,42 @@ export async function updateBankDetails(formData: FormData, admin: boolean) {
         accountName: accountName,
         ifscCode: ifscCode,
         bankName: bankName,
+      },
+    });
+
+    redirect("/user/profile");
+    return {
+      message: "yes",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "no",
+    };
+  }
+}
+
+export async function declinePayment(formData: FormData, admin: boolean) {
+  const userId = formData.get("userId") as string;
+
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+  if (!admin) {
+    return redirect("/api/auth/login");
+  }
+  try {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        enrolled: false,
+        payment: false,
+        verified: false,
+        bought: false,
       },
     });
 

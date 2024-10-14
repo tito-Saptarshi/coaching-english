@@ -14,12 +14,14 @@ export type User = {
   validity?: Date | null; 
   admin: boolean;
   transactionImgUrl: string | null;
+  optionalPaymentMessage: string | null;
 };
 
 export type TrialClass = {
   id: string;
   trialClass: string;
   optionalMessage: string;
+  trialClassLink: string;
 }
 
 export type MainClass = {

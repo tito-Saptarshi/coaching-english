@@ -27,7 +27,7 @@ export async function Navbar() {
   const user = await getUser();
   const admin = await getData(user?.id?? "");
   // console.log("user " + user.email + user.id + user.username);
-  console.log(admin + "admin");
+  // console.log(admin + "admin");
   
   
   return (
@@ -43,10 +43,16 @@ export async function Navbar() {
         >
           Contact
         </Link>
+        {user && <Link
+          className="text-sm font-medium hover:underline underline-offset-4"
+          href="/user/profile"
+        >
+          Profile
+        </Link>}
         {user && admin?.admin ? (
           <Link
             className="text-sm font-medium hover:underline underline-offset-4 "
-            href="/admin/dashboard/users"
+            href="/admin"
           >
             admin
           </Link>

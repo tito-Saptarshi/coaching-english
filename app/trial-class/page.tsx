@@ -29,6 +29,7 @@ async function getClassData() {
       id: true,
       trialClass: true,
       optionalMessage: true,
+      trialClassLink: true,
     },
     orderBy : {
       createdAt: "desc",
@@ -41,7 +42,7 @@ export default async function TrialClass() {
   const user = await getUser();
   const data = await getData(user?.id);
   const classData = await getClassData();
-  console.log("classData " + classData);
+  // console.log("classData " + classData);
   
   if (!user) return redirect("/api/auth/login");
 

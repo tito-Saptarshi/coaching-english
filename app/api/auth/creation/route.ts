@@ -23,6 +23,8 @@ export async function GET() {
       data: {
         id: user.id,
         email: user.email ?? "",
+        fullName: (user.given_name + ' ' + user.family_name) || "No Name",
+
       },
     });
   }

@@ -12,7 +12,7 @@ export default function UpdateBankDetails() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log("Form submitted!");
+    // console.log("Form submitted!");
 
     const formData = new FormData(event.currentTarget);
     formData.get("accountNumber") as string | null;
@@ -27,11 +27,8 @@ export default function UpdateBankDetails() {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-foreground">
-            Book a Free Trial Class
+            Update Bank Details
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Choose your preferred date and time for the trial class
-          </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
