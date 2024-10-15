@@ -20,6 +20,9 @@ async function getData() {
       validity: true,
       transactionImgUrl: true,
       optionalPaymentMessage: true,
+      declineMessage: true,
+      newPayment: true,
+      paymentDecline: true,
     },
   });
   return data;
