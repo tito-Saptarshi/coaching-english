@@ -18,8 +18,9 @@ import {
 } from "@/components/ui/card";
 import prisma from "@/app/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-
+import { unstable_noStore as noStore } from "next/cache";
 async function getData(userId: string) {
+  noStore();
   return await prisma.user.findUnique({
     where: {
       id: userId,
@@ -31,6 +32,7 @@ async function getData(userId: string) {
 }
 
 async function getTrialClassData(trialClass: string) {
+  noStore();
   return await prisma.trailClassDate.findMany({
     where: {
       trialClass: trialClass,

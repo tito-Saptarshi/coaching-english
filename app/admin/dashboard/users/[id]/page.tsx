@@ -1,5 +1,6 @@
 import { StudentDetailsCom } from "@/app/components/user-id/StudentDetailsCom";
 import prisma from "@/app/lib/db";
+import { unstable_noStore as noStore } from "next/cache";
 
 // const student = {
 //   name: "Jane Doe",
@@ -13,6 +14,7 @@ import prisma from "@/app/lib/db";
 //   receiptImage: "/placeholder.svg?height=300&width=400",
 // };
 async function getData(userId: string) {
+  noStore();
   const data = await prisma.user.findUnique({
     where: {
       id: userId,

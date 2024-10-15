@@ -9,8 +9,9 @@ import {
 import Link from "next/link";
 import prisma from "../lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-
+import { unstable_noStore as noStore } from "next/cache";
 async function getUserProfile(userId: string) {
+  noStore();
   return await prisma.user.findUnique({
     where: {
       id: userId,
@@ -19,10 +20,10 @@ async function getUserProfile(userId: string) {
 }
 
 export default async function HomepageButtons() {
-//   const { getUser } = getKindeServerSession();
-//   const user = await getUser();
-//   const userData = await getUserProfile(user?.id);
-  
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  const userData = await getUserProfile(user?.id ?? "");
+
   return (
     <div className="grid gap-6 sm:grid-cols-2">
       <Card className="p-6">
@@ -34,9 +35,17 @@ export default async function HomepageButtons() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-xl font-semibold">$0 - Free</p>
-          <Link href="/trial-class">
-            <Button className="w-full">Book Trial Class</Button>
-          </Link>
+          {userData?.trial ? (
+            <Link href="/trial-class">
+              <Button className="w-full">Book Trial Class</Button>
+            </Link>
+          ) : (
+            <Link href="/trial-class">
+              <Button disabled className="w-full">
+                Trial Class Already Booked
+              </Button>
+            </Link>
+          )}
         </CardContent>
       </Card>
 
@@ -59,9 +68,17 @@ export default async function HomepageButtons() {
             <li>✔️ Weekly assignments & quizzes</li>
             <li>✔️ Direct support from instructors</li>
           </ul>
-          <Link href="/enroll">
-            <Button className="w-full">Enroll Now</Button>
-          </Link>
+          {userData?.enrolled ? (
+            <Link href="/enroll">
+              <Button className="w-full">Enroll Now</Button>
+            </Link>
+          ) : (
+            <Link href="/enroll">
+              <Button disabled className="w-full">
+                Already Enrolled
+              </Button>
+            </Link>
+          )}
         </CardContent>
       </Card>
     </div>

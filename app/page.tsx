@@ -1,8 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CardContent, Card } from "@/components/ui/card";
+import {
+  CardContent,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import Link from "next/link";
 import { Calendar, Users, BookOpen } from "lucide-react";
+import HomepageButtons from "@/app/components/HomepageButtons";
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -20,18 +28,13 @@ export default function Home() {
                   journey today.
                 </p>
               </div>
-              <div className="space-x-4">
-                <Link href={"trial-class"}>
-                  <Button>Book a Trial Class</Button>
-                </Link>
-                {/* already enrolleld  */}
-                <Link href={"enroll"}>
-                  <Button variant="outline">Enroll Now</Button>
-                </Link>
-              </div>
+              {/* Cards for trial class and normal class */}
+              <HomepageButtons />
             </div>
           </div>
         </section>
+
+        {/* Services Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">
@@ -72,6 +75,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Call to Action */}
         <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">
@@ -84,6 +89,8 @@ export default function Home() {
           </div>
         </section>
       </main>
+
+      {/* Footer */}
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-gray-500 dark:text-gray-400">
           © 2024 Acme Coaching. All rights reserved.
