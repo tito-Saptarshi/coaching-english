@@ -68,11 +68,11 @@ export default async function StudentProfile() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label>Email</Label>
-              <p className="text-sm">{user?.email}</p>
+              <p className="text-sm pl-4">{user?.email}</p>
             </div>
             <div>
               <Label>Phone Number</Label>
-              <p className="text-sm">
+              <p className="text-sm pl-4">
                 {user?.phoneNumber ??
                   "Click EDIT PROFILE to add / update phone number"}
               </p>
@@ -121,10 +121,15 @@ export default async function StudentProfile() {
                 )}
               </div>
             </div>
-
+            {user?.declineMessage && (
+              <div>
+                <h1 >Reason for Decline</h1>
+                <p className="ml-4 text-red-900">{user?.declineMessage}</p>
+              </div>
+            )}
             <div>
               <Label>Enrollment Status</Label>
-              <div className="text-sm">
+              <div className="text-sm pl-4">
                 {user?.enrolled == true && user?.verified == true ? (
                   "Enrolled"
                 ) : user?.enrolled == true ? (
@@ -161,11 +166,11 @@ export default async function StudentProfile() {
             </div>
             <div>
               <Label>Trail Class</Label>
-              <div className="text-sm">
+              <div className="text-sm pl-4">
                 {user?.trial == true ? (
                   <div>
                     <p> Already registered for trial class</p>
-                    <Link  className="text-red-900 hover:font-bold ml-2 " href={'/trial-class/confirmation'}> Trial class details</Link>
+                    <Link  className="text-red-900 hover:font-bold " href={'/trial-class/confirmation'}> Trial class details</Link>
                   </div>
                 ) : (
                   <div className="flex flex-col">
@@ -186,7 +191,7 @@ export default async function StudentProfile() {
                   Forgot to Upload Payment Transaction ID or Payment Receipt{" "}
                 </Label>
 
-                <div className="flex flex-col">
+                <div className="flex flex-col pl-4">
                   <Link
                     className="text-red-900 hover:font-bold text-sm"
                     href={"/payment/continue"}

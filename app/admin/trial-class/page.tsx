@@ -18,6 +18,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Group, MessageCircle, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { redirect } from "next/navigation";
 async function getData() {
   return await prisma.trailClassDate.findMany({
     select: {
@@ -31,9 +33,22 @@ async function getData() {
     },
   });
 }
-
+async function getUserProfile(userId: string) {
+  return await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+}
 export default async function TrialClassMail() {
   const data = await getData();
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  const userData = await getUserProfile(user?.id);
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+  if (!userData?.admin) return redirect("/");
   return (
     <div className="w-full max-w-3xl mx-auto p-2 sm:p-4">
       <h1 className="text-xl sm:text-2xl font-bold mb-4">

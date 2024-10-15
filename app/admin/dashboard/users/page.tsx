@@ -1,5 +1,7 @@
 import { AllUsersList } from "@/app/components/AllUsersList";
 import prisma from "@/app/lib/db";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { redirect } from "next/navigation";
 
 async function getData() {
   const data = await prisma.user.findMany({
@@ -71,9 +73,29 @@ const users = [
   },
 ];
 
+async function getUserProfile(userId: string) {
+  return await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+}
+
 export default async function AllUsers() {
 
   const data = await getData();
+  
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  const userData = await getUserProfile(user?.id);
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+  if (!userData?.admin) 
+    return redirect("/");
+
+
   // console.log(data);
   
 

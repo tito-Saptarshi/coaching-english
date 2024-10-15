@@ -54,6 +54,8 @@ export async function confirmPayment(userId: string, admin: boolean) {
       data: {
         verified: true,
         bought: true,
+        paymentDecline: false,
+        enrolled: true,
       },
       select: {
         id: true,
@@ -159,7 +161,7 @@ export async function confirmPaymentUser(formData: FormData) {
 
   const transactionId = formData.get("paymentId") as string;
   const transactionImgUrl = formData.get("transactionImgUrl") as string;
-
+const comments = formData.get("comments") as string;
   try {
     await prisma.user.update({
       where: {
@@ -170,6 +172,7 @@ export async function confirmPaymentUser(formData: FormData) {
         transactionImgUrl: transactionImgUrl,
         validity: validityDate,
         payment: true,
+        optionalPaymentMessage: comments,
       },
     });
     return { success: true, redirectTo: "/user/profile" };
@@ -455,6 +458,7 @@ export async function updatePaymentDetails(formData: FormData) {
         optionalPaymentMessage: comments,
         enrolled: true,
         payment: true,
+        newPayment: true,
       },
     });
 

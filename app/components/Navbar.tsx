@@ -39,7 +39,7 @@ export async function Navbar() {
       <nav className="ml-auto flex gap-4 sm:gap-6 mr-2">
         <Link
           className="text-sm font-medium hover:underline underline-offset-4"
-          href="/"
+          href="/contact"
         >
           Contact
         </Link>

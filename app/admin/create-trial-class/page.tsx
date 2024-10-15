@@ -1,6 +1,8 @@
 import { CreateClassCom } from "@/app/components/admin/CreateClassCom";
 import prisma from "@/app/lib/db";
 import { Separator } from "@/components/ui/separator";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { redirect } from "next/navigation";
 
 async function getData() {
   return await prisma.trailClassDate.findMany({
@@ -16,8 +18,23 @@ async function getData() {
   });
 }
 
+async function getUserProfile(userId: string) {
+  return await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+}
+
 export default async function CreateTrialClass() {
   const data = await getData();
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  const userData = await getUserProfile(user?.id);
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+  if (!userData?.admin) return redirect("/");
   // console.log(data);
 
   return (

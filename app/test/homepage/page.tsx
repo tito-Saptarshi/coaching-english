@@ -1,8 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CardContent, Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  CardContent,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import Link from "next/link";
 import { Calendar, Users, BookOpen } from "lucide-react";
+import HomepageButtons from "@/app/components/HomepageButtons";
 
 export default function Home() {
   return (
@@ -17,51 +24,12 @@ export default function Home() {
                   Transform Your Future with Acme Coaching
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                  Expert guidance to help you achieve your goals. Start your journey today.
+                  Expert guidance to help you achieve your goals. Start your
+                  journey today.
                 </p>
               </div>
               {/* Cards for trial class and normal class */}
-              <div className="grid gap-6 sm:grid-cols-2">
-                {/* Trial Class Card */}
-                <Card className="p-6">
-                  <CardHeader className="space-y-4">
-                    <CardTitle className="text-2xl font-bold">Trial Class</CardTitle>
-                    <CardDescription className="text-gray-500 dark:text-gray-400">
-                      Experience a free trial class before enrolling in the full program.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-xl font-semibold">$0 - Free</p>
-                    <Link href="/trial-class">
-                      <Button className="w-full">Book Trial Class</Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-                
-                {/* Normal Class Card with additional points */}
-                <Card className="p-6">
-                  <CardHeader className="space-y-4">
-                    <CardTitle className="text-2xl font-bold">Regular Classes</CardTitle>
-                    <CardDescription className="text-gray-500 dark:text-gray-400">
-                      Enroll in our regular classes to gain full access to all course materials.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-xl font-semibold">$199 / month</p>
-                    {/* Feature List */}
-                    <ul className="space-y-2 text-gray-500 dark:text-gray-400 pb-4">
-                      <li>✔️ 2 classes per week</li>
-                      <li>✔️ Personalized learning plans</li>
-                      <li>✔️ 24/7 access to course materials</li>
-                      <li>✔️ Weekly assignments & quizzes</li>
-                      <li>✔️ Direct support from instructors</li>
-                    </ul>
-                    <Link href="/enroll">
-                      <Button className="w-full">Enroll Now</Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              </div>
+              <HomepageButtons />
             </div>
           </div>
         </section>
@@ -78,7 +46,8 @@ export default function Home() {
                   <Calendar className="h-12 w-12 text-primary" />
                   <h3 className="text-xl font-bold">Flexible Scheduling</h3>
                   <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                    Choose from a variety of time slots that fit your busy lifestyle.
+                    Choose from a variety of time slots that fit your busy
+                    lifestyle.
                   </p>
                 </CardContent>
               </Card>
@@ -94,9 +63,12 @@ export default function Home() {
               <Card>
                 <CardContent className="flex flex-col items-center space-y-2 p-6">
                   <BookOpen className="h-12 w-12 text-primary" />
-                  <h3 className="text-xl font-bold">Comprehensive Curriculum</h3>
+                  <h3 className="text-xl font-bold">
+                    Comprehensive Curriculum
+                  </h3>
                   <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                    Access a wide range of courses designed to meet your learning goals.
+                    Access a wide range of courses designed to meet your
+                    learning goals.
                   </p>
                 </CardContent>
               </Card>
@@ -120,7 +92,9 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-gray-500 dark:text-gray-400">© 2024 Acme Coaching. All rights reserved.</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          © 2024 Acme Coaching. All rights reserved.
+        </p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link className="text-xs hover:underline underline-offset-4" href="#">
             Terms of Service

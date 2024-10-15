@@ -43,24 +43,15 @@ export function PayInfo({
   return (
     <CardFooter>
       {/* <p>payemnt verified : {verified ? <p>yes</p> : <p> no </p>}</p> */}
-      {data?.payment ? (
-        <Button
-          variant="default"
-          className="w-full"
-          onClick={() => handleClick()}
-          disabled={isLoading || verified || false}
-        >
-          {isLoading ? (
-            <Loader className="animate-spin" /> 
-          ) : (
-            "Verify Payment"
-          )}
-        </Button>
-      ) : (
-        <Button disabled variant="outline" className="w-full">
-          Payment not made yet
-        </Button>
-      )}
+
+      <Button
+        variant="default"
+        className="w-full"
+        onClick={() => handleClick()}
+        disabled={isLoading || false}
+      >
+        {isLoading ? <Loader className="animate-spin" /> : "Verify Payment"}
+      </Button>
     </CardFooter>
   );
 }

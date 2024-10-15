@@ -43,6 +43,7 @@ export function StudentDetailsCom({
   data: User | null;
   userId: string;
 }) {
+  const adminUser = data?.admin;
   const [openDialog, setOpenDialog] = useState(false);
   const [declineReason, setDeclineReason] = useState("");
 
@@ -54,7 +55,7 @@ export function StudentDetailsCom({
   const [newPayment, setNewPayment] = useState(data?.newPayment);
   const [declineMessage, setDeclineMessage] = useState(data?.declineMessage);
   const handleConfirmPayment = async () => {
-    const response = await confirmPayment(userId, true);
+    const response = await confirmPayment(userId, adminUser || false);
     if (response.message === "yes" && response.updatedUser) {
       const updatedUser = response.updatedUser;
       setEnrolled(updatedUser.enrolled);
@@ -67,8 +68,8 @@ export function StudentDetailsCom({
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     formData.get("reason") as string | null;
-
-    const response = await declinePayment(userId, true, formData);
+   
+    const response = await declinePayment(userId, adminUser || false, formData);
     if (response.message === "yes" && response.updatedUser) {
       const updatedUser = response.updatedUser;
       setEnrolled(updatedUser.enrolled);
@@ -76,10 +77,9 @@ export function StudentDetailsCom({
       setVerified(updatedUser.verified);
       setBought(updatedUser.bought);
       setNewPayment(updatedUser.newPayment);
-      setPaymentDecline(updatedUser.paymentDecline)
+      setPaymentDecline(updatedUser.paymentDecline);
     }
   };
-
 
   const handleDeclinePayment = async () => {
     // Handle decline logic here
@@ -131,12 +131,18 @@ export function StudentDetailsCom({
           trial={data?.trial ?? null}
           trialDate={data?.trialDate ?? ""}
           validity={data?.validity}
-          
           newPayment={newPayment!}
         />
+
         <Separator />
         <div className="space-y-4">
           <Label className="text-base">P!ayment Information</Label>
+          {data?.optionalPaymentMessage && (
+            <div>
+              <h1>Transaction Message from User</h1>
+              <p className="pl-4">{data?.optionalPaymentMessage}</p>
+            </div>
+          )}
           <div className="space-y-2">
             <Label htmlFor="transactionId">Transaction ID</Label>
             <div id="transactionId" className="text-sm font-medium">
@@ -175,14 +181,19 @@ export function StudentDetailsCom({
 
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogTrigger asChild>
-          <Button className="m-2 w-1/2 mx-auto justify-center">Decline</Button>
+          <Button
+            className=" w-1/2 mx-auto justify-center m-4 ml-6"
+            variant="destructive"
+          >
+            Decline
+          </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Decline Payment</DialogTitle>
           </DialogHeader>
           <form onSubmit={cancelPayment}>
-            <div className="space-y-4"> 
+            <div className="space-y-4">
               <p>Are you sure you want to decline the payment?</p>
               <div>
                 <Label htmlFor="reason" className="my-2">

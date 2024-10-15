@@ -57,6 +57,7 @@ export function PaymentsForm({ paymentData }: { paymentData: BankDetails }) {
     setIsConfirmationOpen(true);
     const formData = new FormData(e.currentTarget);
     formData.get("paymentId") as string | null;
+    formData.get("comments") as string | null;
     if (imageUrl) {
       formData.append("transactionImgUrl", imageUrl);
     }
@@ -131,6 +132,7 @@ export function PaymentsForm({ paymentData }: { paymentData: BankDetails }) {
         <Label htmlFor="comments">Additional Comments (Optional)</Label>
         <Textarea
           id="comments"
+          name="comments"
           placeholder="Any additional information about your payment"
         />
       </div>

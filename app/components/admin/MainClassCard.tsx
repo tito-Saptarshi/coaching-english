@@ -20,7 +20,7 @@ import { MainClass } from "@/app/lib/types";
 import { MainClassView } from "../MainClassView";
 
 export function MainClassCard({ mainData }: { mainData: MainClass[] }) {
-
+ 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // console.log("handle submit running o click");

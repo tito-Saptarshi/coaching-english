@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { updateUser } from "../actions";
+import Link from "next/link";
 
 export function UpdateUserDetails() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -62,8 +63,9 @@ export function UpdateUserDetails() {
           </form>
         </DialogContent>
       </Dialog>
-
-      <Button>Contact Advisor</Button>
+      <Link href={"/contact"}>
+        <Button>Contact Teacher</Button>
+      </Link>
     </>
   );
 }
