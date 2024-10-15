@@ -15,6 +15,9 @@ export type User = {
   admin: boolean;
   transactionImgUrl: string | null;
   optionalPaymentMessage: string | null;
+  paymentDecline: boolean;
+  declineMessage: string | null;
+  newPayment: boolean;
 };
 
 export type TrialClass = {

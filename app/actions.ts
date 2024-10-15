@@ -503,40 +503,58 @@ export async function updateBankDetails(formData: FormData, admin: boolean) {
   }
 }
 
-export async function declinePayment(formData: FormData, admin: boolean) {
-  const userId = formData.get("userId") as string;
+export async function declinePayment(userId: string, admin: boolean, formData: FormData) 
+  {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) {
+      return redirect("/api/auth/login");
+    }
+    if (!admin) {
+      return redirect("/");
+    }
+  
+    try {
+      const reason = formData.get("reason") as string;
+      const updatedUser = await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          enrolled: false,
+          payment: false,
+          verified: false,
+          bought: false,
+          paymentDecline: true,
+          newPayment: false,
+          declineMessage: reason,
+        },
+        select: {
+          id: true,
+          enrolled: true,
+          payment: true,
+          verified: true,
+          bought: true,
+          newPayment: true,
+          paymentDecline: true,
+          trial: true,
+          trialDate: true,
+          validity: true,
 
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
-  if (!user) {
-    return redirect("/api/auth/login");
-  }
-  if (!admin) {
-    return redirect("/api/auth/login");
-  }
-  try {
-    await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        enrolled: false,
-        payment: false,
-        verified: false,
-        bought: false,
-      },
-    });
-
-    redirect("/user/profile");
-    return {
-      message: "yes",
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      message: "no",
-    };
-  }
+        },
+      });
+  
+      revalidatePath(`/users/${userId}`);
+      return {
+        message: "yes",
+        updatedUser, // Return the updated user data
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        message: "no",
+      };
+    }
 }
 
 export async function testServerAction(id: string) {

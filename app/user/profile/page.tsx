@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { Clock } from "lucide-react";
+import { AlertTriangle, CheckCircle, Clock, XCircle } from "lucide-react";
 import Link from "next/link";
 import { unstable_noStore as noStore } from "next/cache";
 
@@ -43,7 +43,7 @@ export default async function StudentProfile() {
   const user = await getData(data?.id);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 text-sm">
       <Card className="max-w-3xl mx-auto">
         <CardHeader className="flex flex-col sm:flex-row items-center gap-4">
           <Avatar className="w-24 h-24">
@@ -59,7 +59,9 @@ export default async function StudentProfile() {
             <CardTitle className="text-2xl font-bold">
               {user?.fullName}
             </CardTitle>
-            <p className="text-muted-foreground">Click EDIT PROFILE to update your namer</p>
+            <p className="text-muted-foreground">
+              Click EDIT PROFILE to update your namer
+            </p>
           </div>
         </CardHeader>
         <CardContent>
@@ -70,7 +72,10 @@ export default async function StudentProfile() {
             </div>
             <div>
               <Label>Phone Number</Label>
-              <p className="text-sm">{user?.phoneNumber ?? "Click EDIT PROFILE to add / update phone number"}</p>
+              <p className="text-sm">
+                {user?.phoneNumber ??
+                  "Click EDIT PROFILE to add / update phone number"}
+              </p>
             </div>
             <div>
               <Label>Payment Status</Label>
@@ -78,10 +83,36 @@ export default async function StudentProfile() {
                 {user?.payment && user?.verified == true ? (
                   "verified"
                 ) : user?.payment == true ? (
-                  <div className="flex items-center">
+                  <div className="flex items-cente text-base">
                     {" "}
                     pending for verificaiton{" "}
                     <Clock className="h-4 w-4 ml-1 inline" />
+                  </div>
+                ) : user?.paymentDecline == true ? (
+                  <div className="flex  flex-col">
+                    <div className="flex text-red-900 ">
+                      <AlertTriangle className="inline" />
+                      <p>Payment Verification Failed.</p>
+                    </div>
+                    <div className="text-sm my-2 ml-3">
+                      <Link
+                        className="text-red-900 hover:font-bold text-sm"
+                        href={"/payemnt./continue"}
+                      >
+                        CLICK HERE to Upload Payment Details (if paid)
+                      </Link>
+                      <Link
+                        className="text-red-900 hover:font-bold text-sm block mb-2"
+                        href={"/payemnt"}
+                      >
+                        OR, CLICK HERE to continue to payments
+                      </Link>
+                      <p>
+                        if you thing, there&apos;s a mistake made from our side,
+                        you can write to us on saptarshi.dev.20@gmail.com or
+                        call us at +911234567890
+                      </p>
+                    </div>
                   </div>
                 ) : (
                   <div className="flex items-center">
@@ -94,8 +125,27 @@ export default async function StudentProfile() {
             <div>
               <Label>Enrollment Status</Label>
               <div className="text-sm">
-                {user?.enrolled == true ? (
+                {user?.enrolled == true && user?.verified == true ? (
                   "Enrolled"
+                ) : user?.enrolled == true ? (
+                  <div>
+                    <div className="flex">
+                      <p className="pr-2">Enrolled</p>
+                      <CheckCircle className="h-5 w-5 text-green-500" />
+                    </div>
+                    <p className="text-foreground pl-2">
+                      Enrollment may get cancel if payment verification fails.
+                    </p>
+                  </div>
+                ) : user?.paymentDecline == true ? (
+                  <div>
+                    <div className="flex">
+                      <p className="pr-2">
+                        Disenrolled, payment verification failed
+                      </p>
+                      <XCircle className="h-5 w-5 text-red-500" />
+                    </div>
+                  </div>
                 ) : (
                   <div className="flex flex-col">
                     <p className="mr-2">not enrolled</p>{" "}
@@ -103,7 +153,7 @@ export default async function StudentProfile() {
                       className="text-red-900 hover:font-bold"
                       href={"/enroll"}
                     >
-                      Click here to enroll now
+                      CLICK HERE to enroll now
                     </Link>{" "}
                   </div>
                 )}
@@ -114,7 +164,8 @@ export default async function StudentProfile() {
               <div className="text-sm">
                 {user?.trial == true ? (
                   <div>
-                    <p> Already applied for trial class</p>
+                    <p> Already registered for trial class</p>
+                    <Link  className="text-red-900 hover:font-bold ml-2 " href={'/trial-class/confirmation'}> Trial class details</Link>
                   </div>
                 ) : (
                   <div className="flex flex-col">
@@ -122,14 +173,14 @@ export default async function StudentProfile() {
                       className="text-red-900 hover:font-bold"
                       href={"/trial-class"}
                     >
-                      Click here to take free trial class
+                      CLICK HERE to take free trial class
                     </Link>{" "}
                   </div>
                 )}
               </div>
             </div>
 
-            {user?.enrolled && (
+            {(user?.enrolled || user?.paymentDecline) && (
               <div>
                 <Label>
                   Forgot to Upload Payment Transaction ID or Payment Receipt{" "}
@@ -137,12 +188,11 @@ export default async function StudentProfile() {
 
                 <div className="flex flex-col">
                   <Link
-                    className="text-red-900 hover:font-bold"
+                    className="text-red-900 hover:font-bold text-sm"
                     href={"/payment/continue"}
                   >
-                    Click here to reupload payment details
+                    CLICK HERE to reupload payment details
                   </Link>
-                  
                 </div>
               </div>
             )}

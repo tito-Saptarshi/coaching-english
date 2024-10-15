@@ -54,6 +54,7 @@ const initialClasses: Class[] = [
 ];
 
 export function ClassCard({ trialData }: { trialData: TrialClass[] }) {
+  
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);

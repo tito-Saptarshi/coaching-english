@@ -34,6 +34,11 @@ model User {
   verified Boolean @default(false)
   bought   Boolean @default(false)
 
+  paymentDecline Boolean @default(false)
+  declineMessage String? 
+  
+  newPayment Boolean @default(false)
+
   validity DateTime?
 
   admin Boolean @default(false)

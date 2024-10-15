@@ -1,6 +1,6 @@
 "use client";
 
-import { confirmPayment } from "@/app/actions";
+import { confirmPayment, declinePayment } from "@/app/actions";
 import { CourseInfo } from "@/app/components/user-id/CourseInfo";
 import { PayInfo } from "@/app/components/user-id/PayInfo";
 import { User } from "@/app/lib/types";
@@ -25,7 +25,6 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import { useState } from "react";
-import { CancelPayment } from "./CancelPayment";
 const student = {
   name: "Jane Doe",
   email: "jane.doe@example.com",
@@ -51,7 +50,9 @@ export function StudentDetailsCom({
   const [payment, setPayment] = useState(data?.payment);
   const [verified, setVerified] = useState(data?.verified);
   const [bought, setBought] = useState(data?.bought);
-
+  const [paymentDecline, setPaymentDecline] = useState(data?.paymentDecline);
+  const [newPayment, setNewPayment] = useState(data?.newPayment);
+  const [declineMessage, setDeclineMessage] = useState(data?.declineMessage);
   const handleConfirmPayment = async () => {
     const response = await confirmPayment(userId, true);
     if (response.message === "yes" && response.updatedUser) {
@@ -62,14 +63,20 @@ export function StudentDetailsCom({
       setBought(updatedUser.bought);
     }
   };
-  const candelPayment = async () => {
-    const response = await confirmPayment(userId, true);
+  const cancelPayment = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    formData.get("reason") as string | null;
+
+    const response = await declinePayment(userId, true, formData);
     if (response.message === "yes" && response.updatedUser) {
       const updatedUser = response.updatedUser;
       setEnrolled(updatedUser.enrolled);
       setPayment(updatedUser.payment);
       setVerified(updatedUser.verified);
       setBought(updatedUser.bought);
+      setNewPayment(updatedUser.newPayment);
+      setPaymentDecline(updatedUser.paymentDecline)
     }
   };
 
@@ -120,9 +127,12 @@ export function StudentDetailsCom({
           payment={payment!}
           verified={verified!}
           bought={bought!}
+          decline={paymentDecline!}
           trial={data?.trial ?? null}
           trialDate={data?.trialDate ?? ""}
           validity={data?.validity}
+          
+          newPayment={newPayment!}
         />
         <Separator />
         <div className="space-y-4">
@@ -163,9 +173,6 @@ export function StudentDetailsCom({
         handleConfirmPayment={handleConfirmPayment}
       />
 
-
-      <CancelPayment userId={userId} cancelPayment={cancelPayment}/>
-
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogTrigger asChild>
           <Button className="m-2 w-1/2 mx-auto justify-center">Decline</Button>
@@ -174,7 +181,7 @@ export function StudentDetailsCom({
           <DialogHeader>
             <DialogTitle>Decline Payment</DialogTitle>
           </DialogHeader>
-          <form action="">
+          <form onSubmit={cancelPayment}>
             <div className="space-y-4"> 
               <p>Are you sure you want to decline the payment?</p>
               <div>

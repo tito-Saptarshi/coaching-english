@@ -2,7 +2,7 @@
 
 import { User } from "@/app/lib/types";
 import { Label } from "@/components/ui/label";
-import { Calendar, CheckCircle, XCircle } from "lucide-react";
+import { AlertTriangle, Calendar, CheckCircle, XCircle } from "lucide-react";
 
 export function CourseInfo({
   data,
@@ -13,6 +13,8 @@ export function CourseInfo({
   trial,
   trialDate,
   validity,
+  decline,
+  newPayment,
 }: {
   data: User | null;
   enrolled: boolean | null;
@@ -20,6 +22,8 @@ export function CourseInfo({
   verified: boolean | null;
   bought: boolean | null;
   trial: boolean | null;
+  newPayment: boolean | null;
+  decline: boolean;
   trialDate: string;
   validity: Date | null | undefined;
 }) {
@@ -110,6 +114,20 @@ export function CourseInfo({
             <XCircle className="h-5 w-5 text-red-500" />
           )}
         </div>
+        <div className="flex items-center space-x-2">
+          <Label>Payment delclined</Label>
+          {decline ? (
+            <CheckCircle className="h-5 w-5 text-green-500" />
+          ) : (
+            <XCircle className="h-5 w-5 text-red-500" />
+          )}
+        </div>
+        {newPayment && (
+          <div className="flex items-center space-x-2 text-red-900">
+           <AlertTriangle />
+           <h1> New payment has been made</h1>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -20,6 +20,14 @@ export function CancelPayment({
 }) {
   const [openDialog, setOpenDialog] = useState(false);
   const [declineReason, setDeclineReason] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const handleClick = async () => {
+    setIsLoading(true);
+    await cancelPayment();
+    setIsLoading(false);
+  };
+
+
   return (
     <div>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
