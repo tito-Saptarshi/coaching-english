@@ -29,7 +29,7 @@ export default function Home() {
                 </p>
               </div>
               {/* Cards for trial class and normal class */}
-              <HomepageButtons />
+              <HomepageButtons price={200} />
             </div>
           </div>
         </section>
