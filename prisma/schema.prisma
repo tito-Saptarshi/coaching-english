@@ -26,17 +26,17 @@ model User {
 
   enrolled Boolean @default(false)
 
-  paymentId         String? @unique
-  transactionImgUrl String?
+  paymentId              String? @unique
+  transactionImgUrl      String?
   optionalPaymentMessage String?
-  
+
   payment  Boolean @default(false)
   verified Boolean @default(false)
   bought   Boolean @default(false)
 
   paymentDecline Boolean @default(false)
-  declineMessage String? 
-  
+  declineMessage String?
+
   newPayment Boolean @default(false)
 
   validity DateTime?
@@ -66,6 +66,28 @@ model BankDetails {
   bankName      String?
   ifscCode      String?
   scannerQR     String?
+}
+
+model ClassCard {
+  id          String  @id
+  heading     String  @default("Transform Your Future with Acme Coaching")
+  description String? @default("Expert guidance to help you achieve your goals. Start your journey today.")
+  initial     Boolean @default(false)
+  price       Int     @default(100)
+}
+
+model MainFeatures {
+  id        String   @id @default(uuid())
+  userId    String
+  features  String?
+  createdAt DateTime @default(now())
+}
+
+model TrialFeatures {
+  id        String   @id @default(uuid())
+  userId    String
+  features  String?
+  createdAt DateTime @default(now())
 }
 
 model TestModel {

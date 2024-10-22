@@ -47,3 +47,28 @@ export type BankDetails = {
   ifscCode?: string | null;
   scannerQR?: string | null;
 };
+
+// Type for ClassCard model
+export type ClassCard = {
+  id: string;
+  heading: string;
+  description?: string;
+  initial: boolean;
+  price: number;
+};
+
+// Type for MainFeatures model
+export type MainFeatures = {
+  id: string;
+  userId: string;
+  features?: string | null;
+  createdAt: Date;
+};
+
+// Type for TrialFeatures model
+export type TrialFeatures = {
+  id: string;
+  userId: string;
+  features?: string;
+  createdAt: Date;
+};

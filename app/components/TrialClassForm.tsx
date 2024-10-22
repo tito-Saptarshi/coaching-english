@@ -59,14 +59,14 @@ export function TrialClassForm({ classData }: { classData: TrialClass[] }) {
             type="tel"
             required
             className="mt-1"
-            placeholder="+1234567890"
+            placeholder="+91"
           />
         </div>
         <div>
           <Label htmlFor="subject">Choose Date</Label>
           <Select name="subject" required>
             <SelectTrigger className="mt-1">
-              <SelectValue placeholder="Select a subject" />
+              <SelectValue placeholder="Choose a date for trial class" />
             </SelectTrigger>
             <SelectContent>
               {classData.map((classItem) => (

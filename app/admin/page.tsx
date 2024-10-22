@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { BookOpen, Users, UserPlus, Clipboard, DollarSign } from "lucide-react"
+import { BookOpen, Users, UserPlus, Clipboard, DollarSign, Edit } from "lucide-react"
 import Link from "next/link"
 
 export default function AdminDashboard() {
@@ -12,6 +12,7 @@ export default function AdminDashboard() {
     { title: "Trial Class Registrations", description: "View students registered for trial classes", icon: UserPlus, href: "/admin/trial-class" },
     { title: "All Students", description: "Manage and view all enrolled students", icon: Users, href: "/admin/dashboard/users" },
     { title: "Update Bank Details", description: "Here you can update your bank details and QR code", icon: DollarSign, href: "/admin/update-bank-details" },
+    { title: "Update", description: "Update class name and trial/main class cards", icon: Edit, href: "/admin/update-home" },
   ]
 
   return (

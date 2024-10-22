@@ -161,7 +161,7 @@ export async function confirmPaymentUser(formData: FormData) {
 
   const transactionId = formData.get("paymentId") as string;
   const transactionImgUrl = formData.get("transactionImgUrl") as string;
-const comments = formData.get("comments") as string;
+  const comments = formData.get("comments") as string;
   try {
     await prisma.user.update({
       where: {
@@ -507,58 +507,172 @@ export async function updateBankDetails(formData: FormData, admin: boolean) {
   }
 }
 
-export async function declinePayment(userId: string, admin: boolean, formData: FormData) 
-  {
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
-    if (!user) {
-      return redirect("/api/auth/login");
-    }
-    if (!admin) {
-      return redirect("/");
-    }
-  
-    try {
-      const reason = formData.get("reason") as string;
-      const updatedUser = await prisma.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          enrolled: false,
-          payment: false,
-          verified: false,
-          bought: false,
-          paymentDecline: true,
-          newPayment: false,
-          declineMessage: reason,
-        },
-        select: {
-          id: true,
-          enrolled: true,
-          payment: true,
-          verified: true,
-          bought: true,
-          newPayment: true,
-          paymentDecline: true,
-          trial: true,
-          trialDate: true,
-          validity: true,
+export async function declinePayment(
+  userId: string,
+  admin: boolean,
+  formData: FormData
+) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+  if (!admin) {
+    return redirect("/");
+  }
 
-        },
-      });
-  
-      revalidatePath(`/users/${userId}`);
-      return {
-        message: "yes",
-        updatedUser, // Return the updated user data
-      };
-    } catch (error) {
-      console.log(error);
-      return {
-        message: "no",
-      };
-    }
+  try {
+    const reason = formData.get("reason") as string;
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        enrolled: false,
+        payment: false,
+        verified: false,
+        bought: false,
+        paymentDecline: true,
+        newPayment: false,
+        declineMessage: reason,
+      },
+      select: {
+        id: true,
+        enrolled: true,
+        payment: true,
+        verified: true,
+        bought: true,
+        newPayment: true,
+        paymentDecline: true,
+        trial: true,
+        trialDate: true,
+        validity: true,
+      },
+    });
+
+    revalidatePath(`/users/${userId}`);
+    return {
+      message: "yes",
+      updatedUser, // Return the updated user data
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "no",
+    };
+  }
+}
+
+export async function updateHomePage(formData: FormData) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    const heading = formData.get("heading") as string;
+    const desc = formData.get("desc") as string;
+    await prisma.classCard.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        heading: heading,
+        description: desc,
+        initial: true,
+      },
+    });
+
+    return { success: true, redirectTo: "/" };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: "Failed to udpate" };
+  }
+}
+
+export async function updateCoursePrice(price: number) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    await prisma.classCard.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        price: price,
+      },
+    });
+
+    return { success: true, redirectTo: "/" };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: "Failed to udpate" };
+  }
+}
+
+export async function createMainfeatures(features: string) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    await prisma.mainFeatures.create({
+      data: {
+        userId: user.id,
+        features: features,
+      },
+    });
+
+    revalidatePath(`/update-home`);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updateMainfeatures(features: string, id: string) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    await prisma.mainFeatures.update({
+      where: { id: id },
+      data: {
+        features: features,
+      },
+    });
+
+    revalidatePath(`/update-home`);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteMainfeatures(id: string) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    await prisma.mainFeatures.delete({
+      where: { id: id },
+    });
+
+    revalidatePath(`/update-home`);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function testServerAction(id: string) {

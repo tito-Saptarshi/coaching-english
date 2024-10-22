@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { unstable_noStore as noStore } from "next/cache";
 import {
   CardContent,
   Card,
@@ -10,8 +11,16 @@ import {
 import Link from "next/link";
 import { Calendar, Users, BookOpen } from "lucide-react";
 import HomepageButtons from "@/app/components/HomepageButtons";
+import prisma from "./lib/db";
 
-export default function Home() {
+async function getData() {
+  noStore();
+  return prisma.classCard.findMany();
+}
+
+export default async function Home() {
+  const classData = await getData();
+  const data = classData[0];
   return (
     <div className="flex flex-col min-h-screen">
       {/* Initial Navbar */}
@@ -21,15 +30,14 @@ export default function Home() {
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                  Transform Your Future with Acme Coaching
+                  {data.heading}
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                  Expert guidance to help you achieve your goals. Start your
-                  journey today.
+                  {data.description}
                 </p>
               </div>
               {/* Cards for trial class and normal class */}
-              <HomepageButtons />
+              <HomepageButtons price={data.price} />
             </div>
           </div>
         </section>

@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -47,7 +48,7 @@ export default async function StudentProfile() {
       <Card className="max-w-3xl mx-auto">
         <CardHeader className="flex flex-col sm:flex-row items-center gap-4">
           <Avatar className="w-24 h-24">
-            <AvatarImage src="/placeholder-avatar.jpg" alt={user?.fullName} />
+            <AvatarImage src={data.picture ?? "placeholder-avatar.jpg"} alt={user?.fullName} />
             <AvatarFallback>
               {user?.fullName
                 .split(" ")
@@ -65,7 +66,7 @@ export default async function StudentProfile() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className=" flex flex-col gap-y-4">
             <div>
               <Label>Email</Label>
               <p className="text-sm pl-4">{user?.email}</p>
@@ -78,52 +79,55 @@ export default async function StudentProfile() {
               </p>
             </div>
             <div>
-              <Label>Payment Status</Label>
-              <div>
-                {user?.payment && user?.verified == true ? (
-                  "verified"
-                ) : user?.payment == true ? (
-                  <div className="flex items-cente text-base">
-                    {" "}
-                    pending for verificaiton{" "}
-                    <Clock className="h-4 w-4 ml-1 inline" />
-                  </div>
-                ) : user?.paymentDecline == true ? (
-                  <div className="flex  flex-col">
-                    <div className="flex text-red-900 ">
-                      <AlertTriangle className="inline" />
-                      <p>Payment Verification Failed.</p>
+              <Card className="p-2">
+                <Label>Payment Status</Label>
+
+                <div className="my-2 ml-2">
+                  {user?.payment && user?.verified == true ? (
+                    "verified"
+                  ) : user?.payment == true ? (
+                    <div className="flex items-cente text-base">
+                      {" "}
+                      pending for verificaiton{" "}
+                      <Clock className="h-4 w-4 ml-1 inline" />
                     </div>
-                    <div className="text-sm my-2 ml-3">
-                      <Link
-                        className="text-red-900 hover:font-bold text-sm"
-                        href={"/payemnt./continue"}
-                      >
-                        CLICK HERE to Upload Payment Details (if paid)
-                      </Link>
-                      <Link
-                        className="text-red-900 hover:font-bold text-sm block mb-2"
-                        href={"/payemnt"}
-                      >
-                        OR, CLICK HERE to continue to payments
-                      </Link>
-                      <p>
-                        if you thing, there&apos;s a mistake made from our side,
-                        you can write to us on saptarshi.dev.20@gmail.com or
-                        call us at +911234567890
-                      </p>
+                  ) : user?.paymentDecline == true ? (
+                    <div className="flex  flex-col">
+                      <div className="flex text-red-900 items-center ">
+                        <AlertTriangle className="inline" />
+                        <p className="text-lg ml-1">Payment Verification Failed.</p>
+                      </div>
+                      <div className="text-sm my-2 ml-3">
+                        <Link
+                          className="text-red-900 hover:font-bold text-sm"
+                          href={"/payment/continue"}
+                        >
+                          CLICK HERE to Upload Payment Details (if paid)
+                        </Link>
+                        <Link
+                          className="text-red-900 hover:font-bold text-sm block mb-2"
+                          href={"/payment"}
+                        >
+                          OR, CLICK HERE to continue to payments
+                        </Link>
+                        <p>
+                          if you thing, there&apos;s a mistake made from our
+                          side, you can write to us on
+                          saptarshi.dev.20@gmail.com or call us at +911234567890
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <div className="flex items-center">
-                    yet to enroll / not paid
-                  </div>
-                )}
-              </div>
+                  ) : (
+                    <div className="flex items-center">
+                      yet to enroll / not paid
+                    </div>
+                  )}
+                </div>
+              </Card>
             </div>
             {user?.declineMessage && (
               <div>
-                <h1 >Reason for Decline</h1>
+                <h1>Reason for Decline</h1>
                 <p className="ml-4 text-red-900">{user?.declineMessage}</p>
               </div>
             )}
@@ -170,7 +174,13 @@ export default async function StudentProfile() {
                 {user?.trial == true ? (
                   <div>
                     <p> Already registered for trial class</p>
-                    <Link  className="text-red-900 hover:font-bold " href={'/trial-class/confirmation'}> Trial class details</Link>
+                    <Link
+                      className="text-red-900 hover:font-bold "
+                      href={"/trial-class/confirmation"}
+                    >
+                      {" "}
+                      Trial class details
+                    </Link>
                   </div>
                 ) : (
                   <div className="flex flex-col">
