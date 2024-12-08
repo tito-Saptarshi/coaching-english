@@ -24,8 +24,7 @@ async function getMainFeatures() {
   return await prisma.mainFeatures.findMany();
 }
 
-
-export default async function HomepageButtons({price} : {price : number}) {
+export default async function HomepageButtons({ price }: { price: number }) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   const userData = await getUserProfile(user?.id ?? "");
@@ -42,7 +41,20 @@ export default async function HomepageButtons({price} : {price : number}) {
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-xl font-semibold">$0 - Free</p>
-          {userData?.trial ? (
+          <Link href="/trial-class">
+            <Button
+              className="w-full"
+              disabled={!userData || userData.trial}
+            >
+              {!userData
+                ? "Sign up to book Trial"
+                : userData.enrolled
+                ? "Trial Class Already Booked"
+                : "Book Trial Class"}
+            </Button>
+          </Link>
+
+          {/* {userData?.trial ? (
             <Link href="/trial-class">
               <Button className="w-full">Book Trial Class</Button>
             </Link>
@@ -54,7 +66,7 @@ export default async function HomepageButtons({price} : {price : number}) {
                   : "Sign up to book Trial"}
               </Button>
             </Link>
-          )}
+          )} */}
         </CardContent>
       </Card>
 
@@ -80,22 +92,22 @@ export default async function HomepageButtons({price} : {price : number}) {
 
           <ul className="space-y-2 text-gray-500 dark:text-gray-400 pb-4">
             {mainFeatures.map((item) => (
-               <li key={item.id}>✔️ {item.features}</li>
+              <li key={item.id}>✔️ {item.features}</li>
             ))}
           </ul>
 
-
-          {userData?.enrolled ? (
-            <Link href="/enroll">
-              <Button className="w-full">Enroll Now</Button>
-            </Link>
-          ) : (
-            <Link href="/enroll">
-              <Button disabled className="w-full">
-                {userData ? "Already enrolled" : "Sign up to enroll"}
-              </Button>
-            </Link>
-          )}
+          <Link href="/enroll">
+            <Button
+              className="w-full"
+              disabled={!userData || userData.enrolled}
+            >
+              {!userData
+                ? "Sign up to enroll"
+                : userData.enrolled
+                ? "Already enrolled"
+                : "Enroll Now"}
+            </Button>
+          </Link>
         </CardContent>
       </Card>
     </div>

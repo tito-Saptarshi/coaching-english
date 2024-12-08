@@ -591,6 +591,32 @@ export async function updateHomePage(formData: FormData) {
   }
 }
 
+export async function createHomePage(formData: FormData) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    const heading = formData.get("heading") as string;
+    const desc = formData.get("desc") as string;
+    await prisma.classCard.create({
+      data: {
+        userId: user.id,
+        heading: heading,
+        description: desc,
+        initial: true,
+      },
+    });
+
+    return { success: true, redirectTo: "/" };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: "Failed to udpate" };
+  }
+}
+
 export async function updateCoursePrice(price: number) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
@@ -605,6 +631,28 @@ export async function updateCoursePrice(price: number) {
       },
       data: {
         price: price,
+      },
+    });
+
+    return { success: true, redirectTo: "/" };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: "Failed to udpate" };
+  }
+}
+
+export async function createCoursePrice(price: number) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    await prisma.price.create({
+      data: {
+        price: price,
+        userId: user.id || "",
       },
     });
 

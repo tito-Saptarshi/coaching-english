@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { updateHomePage } from "@/app/actions";
+import { createHomePage, updateHomePage } from "@/app/actions";
 import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
 export function UpdateHomePage() {
@@ -26,7 +26,7 @@ export function UpdateHomePage() {
     formData.get("heading") as string | null;
     formData.get("desc") as string | null;
 
-    const result = await updateHomePage(formData); // Call the server action
+    const result = await createHomePage(formData); // Call the server action
 
     if (result.success) {
       router.push(result.redirectTo || "/");

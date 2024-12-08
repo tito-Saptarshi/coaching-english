@@ -30,7 +30,7 @@ import { BankDetails } from "../lib/types";
 import Image from "next/image";
 import { UploadDropzone } from "./Uploadthing";
 
-export function PaymentsForm({ paymentData }: { paymentData: BankDetails }) {
+export function PaymentsForm({ paymentData, paymentPrice }: { paymentData: BankDetails; paymentPrice: number }) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [transactionId, setTransactionId] = useState("");
@@ -157,7 +157,7 @@ export function PaymentsForm({ paymentData }: { paymentData: BankDetails }) {
       <div className="grid gap-8 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Payment Details ($500/month)</CardTitle>
+            <CardTitle>Payment Details (${paymentPrice}/month)</CardTitle>
             <CardDescription>
               Scan the QR code or use the account details below to make your
               payment

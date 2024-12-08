@@ -60,20 +60,31 @@ model TrailClassDate {
 }
 
 model BankDetails {
-  id            String  @id
+  uid           String   @id @default(uuid())
+  id            String
   accountNumber String?
   accountName   String?
   bankName      String?
   ifscCode      String?
   scannerQR     String?
+  date          DateTime @default(now())
 }
 
 model ClassCard {
-  id          String  @id
-  heading     String  @default("Transform Your Future with Acme Coaching")
-  description String? @default("Expert guidance to help you achieve your goals. Start your journey today.")
-  initial     Boolean @default(false)
-  price       Int     @default(100)
+  id          String   @id @default(uuid())
+  userId      String?
+  heading     String   @default("Transform Your Future with Acme Coaching")
+  description String?  @default("Expert guidance to help you achieve your goals. Start your journey today.")
+  initial     Boolean  @default(false)
+  price       Int      @default(100)
+  date        DateTime @default(now())
+}
+
+model Price {
+  id     String   @id @default(uuid())
+  userId String?
+  date   DateTime @default(now())
+  price  Int      @default(100)
 }
 
 model MainFeatures {

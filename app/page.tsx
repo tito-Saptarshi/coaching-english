@@ -15,12 +15,31 @@ import prisma from "./lib/db";
 
 async function getData() {
   noStore();
-  return prisma.classCard.findMany();
+  const data = await prisma.classCard.findMany({
+    orderBy: {
+      date: 'desc',
+    },
+    take: 1, // Limit the result to 1
+  });
+  return data[0];
 }
 
+async function getPrice() {
+  noStore();
+  const data = await prisma.price.findMany({
+    orderBy: {
+      date: 'desc',
+    },
+    take: 1, // Limit the result to 1
+  });
+  return data[0];
+}
+
+
 export default async function Home() {
-  const classData = await getData();
-  const data = classData[0];
+  // const classData = await getData();
+  const data =  await getData();
+  const price =  await getPrice();
   return (
     <div className="flex flex-col min-h-screen">
       {/* Initial Navbar */}
@@ -37,7 +56,7 @@ export default async function Home() {
                 </p>
               </div>
               {/* Cards for trial class and normal class */}
-              <HomepageButtons price={data.price} />
+              <HomepageButtons price={price.price} />
             </div>
           </div>
         </section>

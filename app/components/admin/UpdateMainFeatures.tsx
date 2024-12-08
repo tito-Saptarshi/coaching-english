@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import {
+  createCoursePrice,
   createMainfeatures,
   deleteMainfeatures,
   updateCoursePrice,
@@ -42,7 +43,7 @@ export function UpdateMainFeatures({ data }: { data: MainFeatures[] }) {
 
   const updatePrice = async (price: number) => {
     console.log("Updated price:", price);
-    await updateCoursePrice(price);
+    await createCoursePrice(price);
   };
 
   return (
