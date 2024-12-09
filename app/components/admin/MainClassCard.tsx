@@ -20,17 +20,17 @@ import { MainClass } from "@/app/lib/types";
 import { MainClassView } from "../MainClassView";
 
 export function MainClassCard({ mainData }: { mainData: MainClass[] }) {
- 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // console.log("handle submit running o click");
-    
+
     // console.log("Form submitted!");
 
     const formData = new FormData(event.currentTarget);
     formData.get("date") as string | null;
     formData.get("optionalMessage") as string | null;
-
+    formData.get("classLink") as string | null;
+    
     await chooseMainDates(formData, true);
   };
 
@@ -55,6 +55,12 @@ export function MainClassCard({ mainData }: { mainData: MainClass[] }) {
                 <div className="grid flex-1 gap-2 py-2">
                   <Label htmlFor="date">Date and Time</Label>
                   <Input id="date" name="date" />
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="grid flex-1 gap-2 pb-2">
+                  <Label htmlFor="optionalMessage">Class Link</Label>
+                  <Input id="classLink" name="classLink" />
                 </div>
               </div>
               <div className="flex items-center space-x-2">

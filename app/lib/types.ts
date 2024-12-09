@@ -31,6 +31,7 @@ export type MainClass = {
   id: string;
   mainClass: string;
   optionalMessage: string;
+  link: string;
 }
 
 export type PaymentDetails = {

@@ -16,6 +16,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { UploadDropzone } from "@/app/components/Uploadthing";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function ContinuePayment() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function ContinuePayment() {
     formData.get("paymentId") as string | null;
     formData.get("transactionImgUrl") as string | null;
     formData.get("comments") as string | null;
-    const result =  await updatePaymentDetails(formData);
+    const result = await updatePaymentDetails(formData);
     if (!result) {
       console.error("No response from the server.");
       return;
@@ -77,6 +78,12 @@ export default function ContinuePayment() {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="flex justify-between items-center">
+            <h1>Check Bank details  </h1>
+            <Button asChild variant="secondary">
+              <Link href={"/payment"}>Bank Details</Link>
+            </Button>
+          </div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
               type="hidden"

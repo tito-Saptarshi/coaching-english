@@ -39,7 +39,7 @@ export default async function Payment() {
   const paymentData = await getData();
   const paymentPrice = await getPrice();
   if (!paymentData) {
-    return <div>No payment details found. Please add your bank information.</div>;
+    return <div className="p-5">Payment cannot be made now due to server side problems. </div>;
   }
   return <PaymentsForm  paymentData={paymentData} paymentPrice={paymentPrice.price}/>;
 }

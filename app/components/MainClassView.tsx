@@ -31,7 +31,8 @@ export function MainClassView({ mainData }: { mainData: MainClass[] }) {
     formData.get("oldDate") as string | null;
     formData.get("date") as string | null;
     formData.get("optionalMessage") as string | null;
-
+    formData.get("classLink") as string | null;
+    
     await updateMainDates(formData, true);
   };
 
@@ -60,6 +61,13 @@ export function MainClassView({ mainData }: { mainData: MainClass[] }) {
                       <Clock className="mr-1 h-3 w-3" />
                       {classItem.time}
                     </p> */}
+                    {classItem.link && (
+                      <div className="flex items-start mt-2">
+                        <p>
+                          class link - {classItem.link}
+                        </p>
+                      </div>
+                    )}
                     {classItem.optionalMessage && (
                       <div className="flex items-start mt-2">
                         <MessageCircle className="mr-1 h-3 w-3 mt-0.5 flex-shrink-0" />
@@ -78,7 +86,7 @@ export function MainClassView({ mainData }: { mainData: MainClass[] }) {
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-md">
                         <DialogHeader>
-                          <DialogTitle>Update Trial Date</DialogTitle>
+                          <DialogTitle>Update Class details</DialogTitle>
                           <DialogDescription>
                             <p className="text-base">{classItem.mainClass}</p>
                           </DialogDescription>
@@ -95,6 +103,14 @@ export function MainClassView({ mainData }: { mainData: MainClass[] }) {
                                 Update Class Date and Time
                               </Label>
                               <Input id="date" name="date" />
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-2 ">
+                            <div className="grid flex-1 gap-2 py-2">
+                              <Label htmlFor="classLink">
+                                Update Class Link
+                              </Label>
+                              <Input id="classLink" name="classLink" />
                             </div>
                           </div>
                           <div className="flex items-center space-x-2">

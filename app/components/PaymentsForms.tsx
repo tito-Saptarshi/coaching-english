@@ -165,7 +165,9 @@ export function PaymentsForm({ paymentData, paymentPrice }: { paymentData: BankD
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex justify-center mb-6">
-              <QrCode size={200} />
+              {/* below is the sample qr code */}
+              {/* <QrCode size={200} /> */}
+              <Image src={paymentData.scannerQR ?? ""} alt="imageUrl" width={300} height={300}/>
             </div>
             <div className="space-y-2">
               <div>

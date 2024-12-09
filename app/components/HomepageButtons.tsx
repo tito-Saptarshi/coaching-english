@@ -48,7 +48,7 @@ export default async function HomepageButtons({ price }: { price: number }) {
             >
               {!userData
                 ? "Sign up to book Trial"
-                : userData.enrolled
+                : userData.trial
                 ? "Trial Class Already Booked"
                 : "Book Trial Class"}
             </Button>

@@ -9,11 +9,6 @@ import { unstable_noStore as noStore } from "next/cache";
 async function getData() {
   noStore();
   return await prisma.mainClassDate.findMany({
-    select: {
-      id: true,
-      mainClass: true,
-      optionalMessage: true,
-    },
     orderBy: {
       createdAt: "desc",
     },

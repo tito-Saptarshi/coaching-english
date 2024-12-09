@@ -6,8 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { useState } from "react";
-export function UpdateBankComp({adminUser} : {adminUser : boolean}) {
-    
+export function UpdateBankComp({ adminUser }: { adminUser: boolean }) {
   const [imageUrl, setImageUrl] = useState<null | string>(null);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -19,7 +18,7 @@ export function UpdateBankComp({adminUser} : {adminUser : boolean}) {
     formData.get("accountName") as string | null;
     formData.get("bankName") as string | null;
     formData.get("ifscCode") as string | null;
-
+    formData.get("transactionImgUrl") as string | null;
     await updateBankDetails(formData, adminUser);
   };
   return (
@@ -31,6 +30,11 @@ export function UpdateBankComp({adminUser} : {adminUser : boolean}) {
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <input
+            type="hidden"
+            name="transactionImgUrl"
+            value={imageUrl || ""}
+          />
           <div className="rounded-md shadow-sm space-y-4">
             <div>
               <Label htmlFor="name">Account Number</Label>

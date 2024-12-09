@@ -47,6 +47,7 @@ model User {
 model MainClassDate {
   id              String   @id @default(uuid())
   mainClass       String
+  link String @default("Class Link will be provided shortly")
   optionalMessage String   @default("")
   createdAt       DateTime @default(now())
 }

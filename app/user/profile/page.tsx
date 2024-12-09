@@ -168,6 +168,20 @@ export default async function StudentProfile() {
                 )}
               </div>
             </div>
+            {user?.verified && <div>
+              <Label>Upcoming Classes</Label>
+              <div className="text-sm pl-4">
+                {user?.verified && <>
+                  <Link
+                      className="text-red-900 hover:font-bold "
+                      href={"/trial-class/confirmation"}
+                    >
+                      {" "}
+                      All Classes
+                    </Link>
+                </>}
+              </div>
+            </div>}
             <div>
               <Label>Trail Class</Label>
               <div className="text-sm pl-4">

@@ -312,7 +312,8 @@ export async function chooseMainDates(formData: FormData, admin: boolean) {
   try {
     const mainDate = formData.get("date") as string;
     const optionalMessage = formData.get("optionalMessage") as string;
-
+    const classLink = formData.get("classLink") as string;
+    
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     if (!user) {
@@ -326,6 +327,7 @@ export async function chooseMainDates(formData: FormData, admin: boolean) {
       data: {
         mainClass: mainDate,
         optionalMessage: optionalMessage,
+        link: classLink,
       },
     });
 
@@ -376,7 +378,8 @@ export async function updateMainDates(formData: FormData, admin: boolean) {
     const oldDate = formData.get("oldDate") as string;
     const date = formData.get("date") as string;
     const optionalMessage = formData.get("optionalMessage") as string;
-
+    const classLink = formData.get("classLink") as string;
+    
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     if (!user) {
@@ -392,6 +395,7 @@ export async function updateMainDates(formData: FormData, admin: boolean) {
       data: {
         mainClass: date,
         optionalMessage: optionalMessage,
+        link: classLink,
       },
     });
 
@@ -475,6 +479,7 @@ export async function updateBankDetails(formData: FormData, admin: boolean) {
   const accountName = formData.get("accountName") as string;
   const bankName = formData.get("bankName") as string;
   const ifscCode = formData.get("ifscCode") as string;
+  const imageUrl = formData.get("transactionImgUrl") as string;
 
   const { getUser } = getKindeServerSession();
   const user = await getUser();
@@ -492,6 +497,7 @@ export async function updateBankDetails(formData: FormData, admin: boolean) {
         accountName: accountName,
         ifscCode: ifscCode,
         bankName: bankName,
+        scannerQR: imageUrl
       },
     });
 
