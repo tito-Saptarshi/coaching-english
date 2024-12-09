@@ -1,13 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { unstable_noStore as noStore } from "next/cache";
-import {
-  CardContent,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { CardContent, Card } from "@/components/ui/card";
 import Link from "next/link";
 import { Calendar, Users, BookOpen } from "lucide-react";
 import HomepageButtons from "@/app/components/HomepageButtons";
@@ -17,7 +9,7 @@ async function getData() {
   noStore();
   const data = await prisma.classCard.findMany({
     orderBy: {
-      date: 'desc',
+      date: "desc",
     },
     take: 1, // Limit the result to 1
   });
@@ -28,18 +20,17 @@ async function getPrice() {
   noStore();
   const data = await prisma.price.findMany({
     orderBy: {
-      date: 'desc',
+      date: "desc",
     },
     take: 1, // Limit the result to 1
   });
   return data[0];
 }
 
-
 export default async function Home() {
   // const classData = await getData();
-  const data =  await getData();
-  const price =  await getPrice();
+  const data = await getData();
+  const price = await getPrice();
   return (
     <div className="flex flex-col min-h-screen">
       {/* Initial Navbar */}
@@ -71,10 +62,8 @@ export default async function Home() {
               <Card>
                 <CardContent className="flex flex-col items-center space-y-2 p-6">
                   <Calendar className="h-12 w-12 text-primary" />
-                  <h3 className="text-xl font-bold">Flexible Scheduling</h3>
-                  <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                    Choose from a variety of time slots that fit your busy
-                    lifestyle.
+                  <h3 className="text-xl font-bold">Convenient Timing</h3>
+                  <p className=" text-sm text-gray-500 dark:text-gray-400"> A carefully chosen batch time designed to maximize participation and suit most learners&apos; schedules, ensuring consistent learning progress.
                   </p>
                 </CardContent>
               </Card>
@@ -82,20 +71,20 @@ export default async function Home() {
                 <CardContent className="flex flex-col items-center space-y-2 p-6">
                   <Users className="h-12 w-12 text-primary" />
                   <h3 className="text-xl font-bold">Expert Instructors</h3>
-                  <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                    Learn from industry professionals with years of experience.
+                  <p className=" text-sm text-gray-500 dark:text-gray-400">
+                    Learn from certified trainers with years of experience in teaching English communication skills to diverse groups.
                   </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="flex flex-col items-center space-y-2 p-6">
                   <BookOpen className="h-12 w-12 text-primary" />
-                  <h3 className="text-xl font-bold">
+                  <h3 className="text-xl font-bold text-center">
                     Comprehensive Curriculum
                   </h3>
-                  <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                    Access a wide range of courses designed to meet your
-                    learning goals.
+                  <p className=" text-sm text-gray-500 dark:text-gray-400">
+                    Gain fluency in spoken English with a step-by-step curriculum covering grammar, vocabulary, pronunciation, and
+                    real-life conversations.
                   </p>
                 </CardContent>
               </Card>
@@ -104,7 +93,8 @@ export default async function Home() {
         </section>
 
         {/* Call to Action */}
-        <section className="w-full py-12 md:py-24 lg:py-32">
+
+        {/* <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">
               Ready to Get Started?
@@ -114,21 +104,22 @@ export default async function Home() {
               <Button className="w-full">Request Information</Button>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
 
       {/* Footer */}
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-gray-500 dark:text-gray-400">
-          © 2024 Acme Coaching. All rights reserved.
+          © 2024 {data.heading}. All rights reserved.
         </p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-xs hover:underline underline-offset-4" href="#">
+          {/* <Link className="text-xs hover:underline underline-offset-4" href="#">
             Terms of Service
           </Link>
           <Link className="text-xs hover:underline underline-offset-4" href="#">
             Privacy
-          </Link>
+          </Link> */}
+          {/* <p className="text-xs hover:underline underline-offset-4">developer: saptarshi</p> */}
         </nav>
       </footer>
     </div>
