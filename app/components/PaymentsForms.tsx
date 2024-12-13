@@ -157,7 +157,7 @@ export function PaymentsForm({ paymentData, paymentPrice }: { paymentData: BankD
       <div className="grid gap-8 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Payment Details (${paymentPrice}/month)</CardTitle>
+            <CardTitle>Payment Details (Rs {paymentPrice} / month)</CardTitle>
             <CardDescription>
               Scan the QR code or use the account details below to make your
               payment
