@@ -99,11 +99,11 @@ export default async function HomepageButtons({ price }: { price: number }) {
           <Link href="/enroll">
             <Button
               className="w-full"
-              disabled={!userData || userData.enrolled}
+              disabled={!userData || userData.verified}
             >
               {!userData
                 ? "Sign up to enroll"
-                : userData.enrolled
+                : userData.verified
                 ? "Already enrolled"
                 : "Enroll Now"}
             </Button>
