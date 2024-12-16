@@ -20,7 +20,8 @@ export default function ContactPage() {
               <h3 className="text-xl font-semibold mb-2">Contact Information</h3>
               <div className="space-y-2">
                 <p className="flex items-center"><Phone className="mr-2" size={18} /> Teacher: +91 98740 33303</p>
-                <p className="flex items-center"><Mail className="mr-2" size={18} /> Teacher: {"{currently not availble}"}</p>
+                <p className="flex items-center"><Mail className="mr-2" size={18} /> Teacher: saumendas91@gmail.com </p>
+                <p className="flex items-center"><Mail className="mr-2" size={18} /> Teacher: saumendas1962@rediffmail.com</p>
                 <p className="flex items-center"><Mail className="mr-2" size={18} /> Developer: saptarshi.dev.20@gmail.com</p>
               </div>
             </div>

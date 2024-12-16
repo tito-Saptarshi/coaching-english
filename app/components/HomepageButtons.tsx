@@ -80,7 +80,7 @@ export default async function HomepageButtons({ price }: { price: number }) {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-xl font-semibold">Rs {price} / month</p>
+          <p className="text-xl font-semibold">Rs {price} (Full Course)</p>
           {/* Feature List */}
           {/* <ul className="space-y-2 text-gray-500 dark:text-gray-400 pb-4">
             <li>✔️ 2 classes per week</li>
